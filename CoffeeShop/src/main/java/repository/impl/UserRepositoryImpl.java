@@ -22,6 +22,9 @@ public class UserRepositoryImpl implements UserRepository {
     private static final String SQL_FIND_BY_USERNAME = """
             SELECT * FROM users WHERE username = ?
             """;
+    private static final String SQL_IS_EXIST = """
+            SELECT COUNT(*) FROM users WHERE lower(username) = lower(?) ;
+            """;
 
     private UserRepositoryImpl(){}
     private static class Holder{
@@ -73,4 +76,19 @@ public class UserRepositoryImpl implements UserRepository {
             ps.executeUpdate();
         }
     }
+
+    @Override
+    public boolean existByUsername(String username) {
+        try(Connection connection = DataBaseConfig.getConnection();
+        PreparedStatement ps = connection.prepareStatement(SQL_IS_EXIST)){
+            ps.setString(1, username);
+
+            try (ResultSet rs = ps.executeQuery()){
+                return rs.next() && rs.getInt(1) >0;
+            }
+        }catch (SQLException e){
+            throw new RuntimeException("Error in searching ", e);
+        }
+    }
+
 }
