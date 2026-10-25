@@ -27,16 +27,16 @@ public class SignInServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String username = req.getParameter("username");
+        String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-        if(username == null || username.isBlank() ||
+        if(email == null || email.isBlank() ||
         password == null || password.isBlank()){
             ErrorUtils.redirectToError(req, resp, "Все поля должны быть заполнены!");
             return;
         }
 
-        Optional<UserModel> auth = authService.authenticate(username,password);
+        Optional<UserModel> auth = authService.authenticate(email,password);
 
         if (auth.isEmpty()){
             ErrorUtils.redirectToError(req, resp, "Неверный логин или пароль!");

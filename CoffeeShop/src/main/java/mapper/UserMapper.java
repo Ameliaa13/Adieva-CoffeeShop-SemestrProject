@@ -15,8 +15,12 @@ public class UserMapper {
         while (rs.next()){
             result.add(UserModel.builder()
                             .id(rs.getLong("id"))
-                            .username(rs.getString("username"))
                             .password(rs.getString("password"))
+                            .email(rs.getString("email"))
+                            .firstName(rs.getString("first_name"))
+                            .lastName(rs.getString("last_name"))
+                            .birthDate(rs.getDate("birth_date").toLocalDate())
+                            .role(rs.getString("role"))
                     .build());
         }
         return result;

@@ -6,6 +6,7 @@ import repository.impl.UserRepositoryImpl;
 import service.AuthService;
 import service.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 
@@ -23,24 +24,28 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
-    public void register(String username, String password) {
+    public void register(String email, String password, String firstName, String lastName, LocalDate birthDate, String role) {
         String hashedPassword = passwordEncoder.getHash(password);
 
         UserModel userModel = UserModel.builder()
-                .username(username)
+                .email(email)
                 .password(hashedPassword)
+                .firstName(firstName)
+                .lastName(lastName)
+                .birthDate(birthDate)
+                .role(role)
                 .build();
         userRepository.save(userModel);
     }
 
     @Override
-    public Optional<UserModel> authenticate(String username, String password) {
-        return userRepository.findByUsername(username)
+    public Optional<UserModel> authenticate(String email, String password) {
+        return userRepository.findByEmail(email)
                 .filter(u -> passwordEncoder.matches(password, u.getPassword()));
     }
 
     @Override
-    public Optional<UserModel> findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public Optional<UserModel> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }

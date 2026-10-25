@@ -6,8 +6,8 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    Optional<UserModel> findByUsername(String username);
     void save(UserModel user);
-    boolean existByUsername(String username);
+    boolean existByEmail(String email);
+    Optional<UserModel> findByEmail(String email);
 
 }

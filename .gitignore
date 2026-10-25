@@ -38,3 +38,9 @@
 .DS_Store
 Thumbs.db
 desktop.ini
+
+
+target/
+out/
+build/
+.gradle/
