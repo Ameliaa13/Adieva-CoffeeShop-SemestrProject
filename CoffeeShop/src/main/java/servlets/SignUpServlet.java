@@ -12,6 +12,8 @@ import service.impl.AuthServiceImpl;
 import utils.ErrorUtils;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 
 @WebServlet("/sign-up")
@@ -33,15 +35,13 @@ public class SignUpServlet extends HttpServlet {
         String firstName = req.getParameter("first_name");
         String lastName = req.getParameter("last_name");
         String birthDateStr = req.getParameter("birth_date");
-        String role = req.getParameter("role");
 
 
         if(email == null || email.isBlank()||
         password == null || password.isBlank() ||
         firstName == null || firstName.isBlank() ||
         lastName == null || lastName.isBlank() ||
-                birthDateStr == null || birthDateStr.isBlank() ||
-        role == null || role.isBlank()){
+                birthDateStr == null || birthDateStr.isBlank() ) {
             ErrorUtils.redirectToError(req, resp,"Все поля формы регистрации обязательны к заполнению!" );
             return;
         }
@@ -52,9 +52,9 @@ public class SignUpServlet extends HttpServlet {
         }
         LocalDate birthDate = LocalDate.parse(birthDateStr);
 
-        authService.register(email, password, firstName, lastName, birthDate, role);
+        authService.register(email, password, firstName, lastName, birthDate, "USER");
         //TODO: добавить путь
-        resp.sendRedirect(req.getContextPath());
+        resp.sendRedirect(req.getContextPath() + "/menu");
 
     }
 }

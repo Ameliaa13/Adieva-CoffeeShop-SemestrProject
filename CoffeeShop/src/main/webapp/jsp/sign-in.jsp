@@ -25,13 +25,18 @@
         </div>
     </c:if>
 
+    <c:if test="${not empty param.msg}">
+        <div class="success-msg" style="color: green; background-color: #e6ffe6; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+            <c:out value="${param.msg}" />
+        </div>
+    </c:if>
 
     <form method="post" action="${signInUrl}">
         <div class="form-group">
-            <label for="username">Логин</label>
+            <label for="email">Логин</label>
 
-            <input type="text" id="username" name="username"
-                value="<c:out value='${username}'/>"
+            <input type="text" id="email" name="email"
+                value="<c:out value='${email}'/>"
                 placeholder="Введите логин" required>
 
         </div>

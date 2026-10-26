@@ -12,6 +12,8 @@ import service.impl.AuthServiceImpl;
 import utils.ErrorUtils;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 @WebServlet("/sign-in")
@@ -50,6 +52,6 @@ public class SignInServlet extends HttpServlet {
 
 
         //TODO: добавить путь к сайту
-        resp.sendRedirect(req.getContextPath()  );
+        resp.sendRedirect(req.getContextPath() + "/menu");
     }
 }

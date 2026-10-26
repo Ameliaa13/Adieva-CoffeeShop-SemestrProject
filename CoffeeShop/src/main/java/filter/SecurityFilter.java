@@ -29,6 +29,7 @@ public class SecurityFilter implements Filter {
                 requestURI.equals(contextPath + "/sign-in") ||
                 requestURI.equals(contextPath + "/sign-up") ||
                 requestURI.startsWith(contextPath + "/css/") ||
+                requestURI.equals(contextPath + "/error") ||
                 requestURI.startsWith(contextPath + "/js/");
 
         if(user != null || isPublicPage){
