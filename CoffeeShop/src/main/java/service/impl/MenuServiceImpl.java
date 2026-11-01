@@ -9,11 +9,12 @@ import repository.impl.MenuItemRepositoryImpl;
 import service.MenuService;
 
 import java.util.List;
+import java.util.Optional;
 
 public class MenuServiceImpl implements MenuService {
 
-    private MenuItemRepository menuItemRepository = MenuItemRepositoryImpl.getInstance();
-    private CategoryRepository categoryRepository = CategoryRepositoryImpl.getInstance();
+    private final MenuItemRepository menuItemRepository = MenuItemRepositoryImpl.getInstance();
+    private final CategoryRepository categoryRepository = CategoryRepositoryImpl.getInstance();
 
     private MenuServiceImpl(){}
     private static class Holder{
@@ -36,5 +37,10 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<MenuItemModel> getItemsByCategory(Long categoryId) {
         return menuItemRepository.findByCategoryId(categoryId);
+    }
+
+    @Override
+    public Optional<MenuItemModel> getMenuItemById(Long id) {
+        return menuItemRepository.findById(id);
     }
 }

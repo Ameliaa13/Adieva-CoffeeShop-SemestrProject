@@ -5,6 +5,7 @@ import model.CategoryModel;
 import model.MenuItemModel;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface MenuService {
@@ -12,5 +13,6 @@ public interface MenuService {
     List<CategoryModel> getAllCategories();
     List<MenuItemModel> getAllMenuItems();
     List<MenuItemModel> getItemsByCategory(Long categoryId);
+    Optional<MenuItemModel> getMenuItemById(Long id);
 
 }

@@ -1,0 +1,438 @@
+
+/* ========================================
+   ОБЩИЕ ЦВЕТА И НАСТРОЙКИ
+   ======================================== */
+
+:root {
+    --coffee-dark: #49332b;
+    --coffee-medium: #795644;
+    --coffee-accent: #a56b49;
+
+    --cream: #f7f2eb;
+    --cream-light: #fffdf9;
+    --cream-dark: #e9dfd4;
+
+    --text-main: #342923;
+    --text-muted: #bca99a;
+    --border-color: #e7ddd2;
+
+    --transition: 0.25s ease;
+}
+
+/* Не даём padding увеличивать размеры элементов */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    color: var(--text-main);
+    background: var(--cream);
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+
+/* ========================================
+   ШАПКА САЙТА
+   ======================================== */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    width: 100%;
+    background: var(--coffee-dark);
+    color: var(--cream-light);
+
+    box-shadow: 0 3px 15px rgba(35, 22, 16, 0.12);
+}
+
+.header-inner {
+    width: 100%;
+    max-width: 1280px;
+    min-height: 88px;
+
+    margin: 0 auto;
+    padding: 16px 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+}
+
+
+/* ========================================
+   ЛОГОТИП
+   ======================================== */
+
+.logo {
+    display: inline-flex;
+    flex-direction: column;
+    flex-shrink: 0;
+
+    color: var(--cream-light);
+    line-height: 1.3;
+}
+
+.logo-name {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+}
+
+.logo-subtitle {
+    margin-top: 5px;
+
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    opacity: 0.75;
+}
+
+
+/* ========================================
+   ОСНОВНАЯ НАВИГАЦИЯ
+   ======================================== */
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 26px;
+}
+
+.main-nav a {
+    position: relative;
+
+    padding: 8px 0;
+
+    color: #e6d9cd;
+    font-size: 14px;
+    white-space: nowrap;
+
+    transition: color var(--transition);
+}
+
+.main-nav a::after {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+
+    width: 0;
+    height: 2px;
+
+    background: #d7a77f;
+    transition: width var(--transition);
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    color: #e9bd98;
+}
+
+.main-nav a:hover::after,
+.main-nav a.active::after {
+    width: 100%;
+}
+
+
+/* ========================================
+   КНОПКИ СПРАВА В ШАПКЕ
+   ======================================== */
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+
+    white-space: nowrap;
+}
+
+.header-link,
+.cart-link {
+    color: #f0e4d9;
+    font-size: 14px;
+
+    transition: color var(--transition);
+}
+
+.header-link:hover,
+.cart-link:hover {
+    color: #e9bd98;
+}
+
+.login-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 19px;
+
+    border: 1px solid #f0dfcb;
+    border-radius: 7px;
+
+    background: #f0dfcb;
+    color: var(--coffee-dark);
+
+    font-size: 14px;
+    font-weight: bold;
+
+    transition:
+            background var(--transition),
+            color var(--transition),
+            border-color var(--transition);
+}
+
+.login-button:hover {
+    background: transparent;
+    border-color: #f0dfcb;
+    color: #f0dfcb;
+}
+
+
+/* ========================================
+   ПОДВАЛ
+   ======================================== */
+
+.site-footer {
+    margin-top: auto;
+    padding: 48px 32px 0;
+
+    background: var(--coffee-dark);
+    color: var(--cream-light);
+}
+
+.footer-inner {
+    width: 100%;
+    max-width: 1216px;
+
+    margin: 0 auto;
+    padding-bottom: 38px;
+
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 60px;
+}
+
+
+/* Информация о кофейне */
+
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.footer-logo {
+    margin-bottom: 16px;
+}
+
+.footer-brand p {
+    max-width: 320px;
+    margin: 0;
+
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+
+/* Колонки ссылок и контактов */
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 9px;
+}
+
+.footer-column h3 {
+    margin: 0 0 10px;
+
+    color: #fff5e9;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 19px;
+    font-weight: normal;
+}
+
+.footer-column a,
+.footer-column p {
+    margin: 0;
+
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.footer-column a {
+    transition: color var(--transition);
+}
+
+.footer-column a:hover {
+    color: #f0c39e;
+}
+
+
+/* Нижняя строка */
+
+.footer-bottom {
+    width: 100%;
+    max-width: 1216px;
+
+    margin: 0 auto;
+    padding: 18px 0;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    color: #bca99a;
+    font-size: 12px;
+}
+
+
+/* ========================================
+   АДАПТИВНОСТЬ: ПЛАНШЕТЫ
+   ======================================== */
+
+@media (max-width: 1050px) {
+    .header-inner {
+        flex-wrap: wrap;
+        gap: 18px;
+    }
+
+    .main-nav {
+        gap: 18px;
+    }
+
+    .footer-inner {
+        gap: 35px;
+    }
+}
+
+
+/* ========================================
+   АДАПТИВНОСТЬ: ТЕЛЕФОНЫ
+   ======================================== */
+
+@media (max-width: 760px) {
+    .header-inner {
+        padding: 16px 20px;
+        gap: 16px;
+    }
+
+    .logo-name {
+        font-size: 22px;
+    }
+
+    .header-actions {
+        margin-left: auto;
+        gap: 12px;
+    }
+
+    .main-nav {
+        order: 3;
+        width: 100%;
+
+        justify-content: flex-start;
+        gap: 22px;
+
+        overflow-x: auto;
+        padding: 4px 0 8px;
+    }
+
+    .main-nav a {
+        font-size: 13px;
+    }
+
+    .site-footer {
+        padding: 36px 22px 0;
+    }
+
+    .footer-inner {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 32px;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+}
+
+
+/* ========================================
+   АДАПТИВНОСТЬ: МАЛЕНЬКИЕ ТЕЛЕФОНЫ
+   ======================================== */
+
+@media (max-width: 420px) {
+    .header-inner {
+        padding: 14px 16px;
+    }
+
+    .logo-name {
+        font-size: 20px;
+    }
+
+    .logo-subtitle {
+        font-size: 8px;
+        letter-spacing: 1.8px;
+    }
+
+    .header-actions {
+        gap: 10px;
+    }
+
+    .login-button {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .cart-link,
+    .header-link {
+        font-size: 12px;
+    }
+
+    .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .footer-brand {
+        grid-column: auto;
+    }
+
+    .footer-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 5px;
+    }
+}
