@@ -37,7 +37,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         try(Connection connection = DataBaseConfig.getConnection()){
             return findAll(connection);
         }catch (SQLException e){
-            throw new RuntimeException("Error finding",e);
+            throw new RuntimeException("Error finding category",e);
         }
     }
 
@@ -57,7 +57,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         try(Connection connection = DataBaseConfig.getConnection()){
             return findById(connection, id);
         }catch (SQLException e){
-            throw new RuntimeException("Error finding by Id", e);
+            throw new RuntimeException("Error finding category by Id", e);
         }
     }
 

@@ -41,7 +41,7 @@ public class UserRepositoryImpl implements UserRepository {
         try(Connection connection = DataBaseConfig.getConnection()){
             return findByEmail(connection, email);
         }catch (SQLException e){
-            throw new RuntimeException("Error finding by email", e);
+            throw new RuntimeException("Error finding user by email", e);
         }
     }
 
@@ -65,7 +65,7 @@ public class UserRepositoryImpl implements UserRepository {
         try(Connection connection = DataBaseConfig.getConnection()){
             save(connection, user);
         }catch (SQLException e){
-            throw new RuntimeException("Error saving", e);
+            throw new RuntimeException("Error saving user", e);
         }
     }
 
@@ -98,7 +98,7 @@ public class UserRepositoryImpl implements UserRepository {
                 return rs.next() && rs.getInt(1) >0;
             }
         }catch (SQLException e){
-            throw new RuntimeException("Error in searching ", e);
+            throw new RuntimeException("Error in searching user ", e);
         }
     }
 

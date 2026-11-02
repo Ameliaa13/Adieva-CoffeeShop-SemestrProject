@@ -23,6 +23,19 @@ CREATE TABLE menu_items (
     image_url VARCHAR(256)
 );
 
+CREATE TABLE IF NOT EXISTS promotions(
+    id                  SERIAL PRIMARY KEY,
+    title               VARCHAR(100) NOT NULL ,
+    short_description   VARCHAR(250),
+    description         TEXT NOT NULL ,
+    image_url           VARCHAR(256),
+    start_date          DATE NOT NULL,
+    end_date            DATE NOT NULL,
+    is_active           BOOLEAN NOT NULL DEFAULT TRUE,
+
+    CHECK (end_date >= start_date)
+);
+
 /*
 CREATE TABLE If NOT EXISTS reviews(
     id SERIAL PRIMARY KEY ,

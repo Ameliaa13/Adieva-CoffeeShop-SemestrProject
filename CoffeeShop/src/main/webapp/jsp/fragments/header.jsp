@@ -12,23 +12,36 @@
         <nav class="main-nav">
             <a href="<c:url value='/'/>">Главная</a>
             <a href="<c:url value='/menu'/>">Меню</a>
+            <a href="<c:url value='/promotions'/>">Акции</a>
             <a href="<c:url value='/events'/>">Мероприятия</a>
             <a href="<c:url value='/about'/>">О нас</a>
         </nav>
 
         <div class="header-actions">
-            <c:choose>
-                <c:when test="${not empty sessionScope.user}">
-                    <a href="<c:url value='/profile'/>" class="header-link">Профиль</a>
-                </c:when>
+        <c:choose>
+            <c:when test="${not empty sessionScope.user}">
+                <a href="<c:url value='/profile'/>" class="header-link">
+                    Профиль
+                </a>
 
-                <c:otherwise>
-                    <a href="<c:url value='/sign-in'/>" class="login-button">Войти</a>
-                </c:otherwise>
-            </c:choose>
-            <a href="<c:url value='/cart'/>" class="cart-link">Корзина</a>
+                <form action="<c:url value='/logout'/>"
+                      method="post"
+                      class="logout-form">
+                    <button type="submit" class="header-link logout-button">
+                        Выйти
+                    </button>
+                </form>
+            </c:when>
 
-        </div>
+            <c:otherwise>
+                <a href="<c:url value='/sign-in'/>" class="login-button">
+                    Профиль
+                </a>
+            </c:otherwise>
+        </c:choose>
+
+        <a href="<c:url value='/cart'/>" class="cart-link">Корзина</a>
+    </div>
 
     </div>
 

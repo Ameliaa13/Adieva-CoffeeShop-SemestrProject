@@ -28,8 +28,14 @@ public class SecurityFilter implements Filter {
         boolean isPublicPage = requestURI.equals(contextPath + "/") ||
                 requestURI.equals(contextPath + "/sign-in") ||
                 requestURI.equals(contextPath + "/sign-up") ||
-                requestURI.startsWith(contextPath + "/css/") ||
                 requestURI.equals(contextPath + "/error") ||
+                requestURI.equals(contextPath + "/menu") ||
+                requestURI.equals(contextPath + "/menu/item") ||
+                requestURI.equals(contextPath + "/events") ||
+                requestURI.equals(contextPath + "/promotions") ||
+
+                requestURI.startsWith(contextPath + "/css/") ||
+                requestURI.startsWith(contextPath + "/img/") ||
                 requestURI.startsWith(contextPath + "/js/");
 
         if(user != null || isPublicPage){
