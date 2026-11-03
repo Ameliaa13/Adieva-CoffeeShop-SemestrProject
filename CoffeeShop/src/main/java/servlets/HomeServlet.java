@@ -1,0 +1,38 @@
+package servlets;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import model.EventModel;
+import service.EventService;
+import service.PromotionService;
+import service.impl.EventServiceImpl;
+import service.impl.PromotionServiceImpl;
+
+import java.io.IOException;
+import java.util.List;
+
+@WebServlet("")
+public class HomeServlet extends HttpServlet {
+
+    private final EventService eventService = EventServiceImpl.getInstance();
+    private final PromotionService promotionService = PromotionServiceImpl.getInstance();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("promotions", promotionService.getActivePromotions());
+
+        List<EventModel> upcomingEvents = eventService.getUpcomingEvents();
+
+        EventModel nextEvent = upcomingEvents.stream()
+                .filter(event -> "OPEN".equalsIgnoreCase(event.getVisibility()))
+                .findFirst()
+                .orElse(null);
+
+        req.setAttribute("nextEvent", nextEvent);
+
+        req.getRequestDispatcher("/jsp/home.jsp").forward(req, resp);
+    }
+}

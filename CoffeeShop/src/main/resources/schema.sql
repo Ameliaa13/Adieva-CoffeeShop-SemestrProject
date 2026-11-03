@@ -36,6 +36,20 @@ CREATE TABLE IF NOT EXISTS promotions(
     CHECK (end_date >= start_date)
 );
 
+CREATE TABLE If NOT EXISTS cart_items(
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ,
+    menu_item_id INTEGER NOT NULL REFERENCES menu_items(id) ON DELETE CASCADE ,
+    quantity INTEGER NOT NULL DEFAULT 1 CHECK ( quantity > 0 ),
+    PRIMARY KEY (user_id, menu_item_id)
+);
+
+CREATE TABLE IF NOT EXISTS favorites(
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ,
+    menu_item_id INTEGER NOT NULL REFERENCES menu_items(id) ON DELETE CASCADE ,
+    PRIMARY KEY (user_id, menu_item_id)
+);
+
+
 /*
 CREATE TABLE If NOT EXISTS reviews(
     id SERIAL PRIMARY KEY ,

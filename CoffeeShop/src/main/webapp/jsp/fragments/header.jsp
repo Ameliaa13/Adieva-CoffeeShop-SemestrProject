@@ -18,30 +18,38 @@
         </nav>
 
         <div class="header-actions">
-        <c:choose>
-            <c:when test="${not empty sessionScope.user}">
-                <a href="<c:url value='/profile'/>" class="header-link">
-                    Профиль
-                </a>
+            <c:choose>
+                <c:when test="${not empty sessionScope.user}">
+                    <a href="<c:url value='/profile'/>" class="header-link">
+                        Профиль
+                    </a>
 
-                <form action="<c:url value='/logout'/>"
-                      method="post"
-                      class="logout-form">
-                    <button type="submit" class="header-link logout-button">
-                        Выйти
-                    </button>
-                </form>
-            </c:when>
+                    <form action="<c:url value='/logout'/>"
+                          method="post"
+                          class="logout-form">
+                        <button type="submit" class="header-link logout-button">
+                            Выйти
+                        </button>
+                    </form>
+                </c:when>
 
-            <c:otherwise>
-                <a href="<c:url value='/sign-in'/>" class="login-button">
-                    Профиль
-                </a>
-            </c:otherwise>
-        </c:choose>
+                <c:otherwise>
+                    <a href="<c:url value='/sign-in'/>" class="login-button">
+                        Профиль
+                    </a>
+                </c:otherwise>
+            </c:choose>
 
-        <a href="<c:url value='/cart'/>" class="cart-link">Корзина</a>
-    </div>
+            <a href="<c:url value='/favorites'/>" class="favorites-link">
+                <span class="favorites-link-icon" aria-hidden="true">♡</span>
+                <span>Избранное</span>
+            </a>
+
+            <a href="<c:url value='/cart'/>" class="cart-link">
+                <span aria-hidden="true">🛒</span>
+                <span>Корзина</span>
+            </a>
+        </div>
 
     </div>
 

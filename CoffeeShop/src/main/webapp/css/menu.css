@@ -229,3 +229,123 @@ h1 {
         grid-template-columns: minmax(0, 320px);
     }
 }
+
+.menu-card-image-wrap {
+    position: relative;
+}
+
+.menu-card-image-wrap > a {
+    display: block;
+}
+
+.menu-img-placeholder {
+    display: grid;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    place-items: center;
+    border-radius: 4px;
+    background: #eee7e1;
+    color: #75675e;
+    font-size: 14px;
+}
+
+.menu-card-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.menu-card-link h3 {
+    margin: 8px 0;
+}
+
+.favorite-form {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    margin: 0;
+}
+
+.favorite-button {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 253, 249, 0.95);
+    color: #75675e;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+.favorite-button.is-favorite {
+    color: #c43c56;
+}
+
+.menu-card-cart {
+    margin-top: auto;
+    padding-top: 14px;
+}
+
+.menu-card-cart form {
+    margin: 0;
+}
+
+.add-to-cart-button {
+    width: 100%;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 6px;
+    background: #6f4e37;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.add-to-cart-button:hover {
+    background: #5a3d2b;
+}
+
+.cart-count {
+    display: block;
+    margin-bottom: 8px;
+    color: #6f4e37;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.quantity-controls form {
+    display: inline-flex;
+}
+
+.quantity-button {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #6f4e37;
+    border-radius: 6px;
+    background: transparent;
+    color: #6f4e37;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.quantity-button:hover {
+    background: #6f4e37;
+    color: white;
+}
+
+.quantity-value {
+    min-width: 20px;
+    text-align: center;
+    font-weight: bold;
+}

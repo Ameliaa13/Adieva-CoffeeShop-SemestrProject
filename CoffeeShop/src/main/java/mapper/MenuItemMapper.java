@@ -24,4 +24,15 @@ public class MenuItemMapper {
         }
         return result;
     }
+
+    public MenuItemModel toSingleEntity(ResultSet rs) throws SQLException {
+        return MenuItemModel.builder()
+                .id(rs.getLong("id"))
+                .name(rs.getString("name"))
+                .categoryId(rs.getLong("category_id"))
+                .price(rs.getDouble("price"))
+                .description(rs.getString("description"))
+                .imageUrl(rs.getString("image_url"))
+                .build();
+    }
 }
