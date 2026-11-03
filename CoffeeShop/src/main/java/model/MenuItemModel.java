@@ -17,4 +17,8 @@ public class MenuItemModel {
     private Double price;
     private String description;
     private String imageUrl;
+    private Double calories;
+    private Double proteins;
+    private Double fats;
+    private Double carbohydrates;
 }

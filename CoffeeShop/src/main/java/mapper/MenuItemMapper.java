@@ -20,6 +20,10 @@ public class MenuItemMapper {
                             .price(rs.getDouble("price"))
                             .description(rs.getString("description"))
                             .imageUrl(rs.getString("image_url"))
+                            .calories(rs.getDouble("calories"))
+                            .proteins(rs.getDouble("proteins"))
+                            .fats(rs.getDouble("fats"))
+                            .carbohydrates(rs.getDouble("carbohydrates"))
                     .build());
         }
         return result;
@@ -27,12 +31,16 @@ public class MenuItemMapper {
 
     public MenuItemModel toSingleEntity(ResultSet rs) throws SQLException {
         return MenuItemModel.builder()
-                .id(rs.getLong("id"))
-                .name(rs.getString("name"))
-                .categoryId(rs.getLong("category_id"))
-                .price(rs.getDouble("price"))
-                .description(rs.getString("description"))
-                .imageUrl(rs.getString("image_url"))
+                    .id(rs.getLong("id"))
+                    .name(rs.getString("name"))
+                    .categoryId(rs.getLong("category_id"))
+                    .price(rs.getDouble("price"))
+                    .description(rs.getString("description"))
+                    .imageUrl(rs.getString("image_url"))
+                    .calories(rs.getDouble("calories"))
+                    .proteins(rs.getDouble("proteins"))
+                    .fats(rs.getDouble("fats"))
+                    .carbohydrates(rs.getDouble("carbohydrates"))
                 .build();
     }
 }

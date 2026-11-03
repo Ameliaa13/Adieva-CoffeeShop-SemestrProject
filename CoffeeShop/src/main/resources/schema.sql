@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS users (
     birth_date DATE NOT NULL ,
     role VARCHAR(30) NOT NULL DEFAULT 'USER'
 );
-SELECT * FROM users;
 
 CREATE TABLE IF NOT EXISTS categories(
     id SERIAL PRIMARY KEY ,
@@ -22,6 +21,12 @@ CREATE TABLE menu_items (
     description TEXT,
     image_url VARCHAR(256)
 );
+
+ALTER TABLE menu_items
+    ADD COLUMN calories NUMERIC(8, 2),
+    ADD COLUMN proteins NUMERIC(8, 2),
+    ADD COLUMN fats NUMERIC(8, 2),
+    ADD COLUMN carbohydrates NUMERIC(8, 2);
 
 CREATE TABLE IF NOT EXISTS promotions(
     id                  SERIAL PRIMARY KEY,
@@ -50,14 +55,6 @@ CREATE TABLE IF NOT EXISTS favorites(
 );
 
 
-/*
-CREATE TABLE If NOT EXISTS reviews(
-    id SERIAL PRIMARY KEY ,
-    user_first_name VARCHAR(50) REFERENCES users(first_name) ON DELETE CASCADE ,
-    user_last_name VARCHAR(50) REFERENCES users(last_name) ON DELETE CASCADE ,
-    description TEXT
-)*/
-
 CREATE TABLE IF NOT EXISTS events(
     id              SERIAL PRIMARY KEY ,
     title           VARCHAR(50) NOT NULL ,
@@ -74,25 +71,6 @@ CREATE TABLE IF NOT EXISTS events(
     CHECK ( status in('PLANNED', 'CANCELLED', 'COMPLETED') )
 );
 
-INSERT INTO categories (name) VALUES ('Сезонные напитки'), ('Классика'),
-                                     ('Авторские'),('Холодный кофе'),
-                                     ('Не кофе'),('Десерты');
-
-INSERT INTO menu_items(name, category_id, price, description, image_url) VALUES
-                    ('Капучино' ,  2, 240.0, 'Вкусный классический капучино!', '/img/cappuccino.jpg');
-
-
-
-INSERT INTO menu_items(name, category_id, price, description, image_url) VALUES
-('Американо', 2, 165.0, 'Классический черный кофе с насыщенным ароматом, мягким вкусом и приятным продолжительным послевкусием. Идеальный выбор для тех, кто любит чистый вкус кофе без добавления молока.', '/img/Americano.jpg'),
-('Эспрессо', 2, 109.0, 'Крепкий концентрированный кофе, приготовленный под высоким давлением. Обладает насыщенным вкусом, плотной текстурой и ярким кофейным ароматом — настоящая основа для истинных ценителей кофе.', '/img/espresso.jpg'),
-('Латте', 2, 235.0, 'Нежный кофейный напиток с насыщенным эспрессо и большим количеством молока. Мягкий сливочный вкус и бархатистая текстура делают его идеальным выбором для тех, кто любит деликатный кофейный акцент.', '/img/latte.jpg'),
-('Раф', 2, 159.0, 'Нежный кофейный напиток на основе эспрессо и сливок, взбитых до воздушной кремовой текстуры. Мягкий, насыщенный вкус с деликатной сладостью и бархатистым послевкусием.', '/img/raf.jpg'),
-('Флэт уайт', 2, 205.0, 'Насыщенный кофейный напиток с двойной порцией эспрессо и тонким слоем шелковистой молочной микропены. Яркий вкус кофе, дополненный мягкой сливочной текстурой, для идеального баланса крепости и нежности.', '/img/flat white.jpg'),
-('Апельсиновый эспрессо', 2, 185.0, 'Освежающий кофейный напиток, сочетающий крепкий эспрессо и яркий цитрусовый вкус апельсина. Бодрящий контраст сочной сладости и кофейной горчинки с приятным послевкусием.', '/img/orange espresso.jpg');
-
-INSERT INTO menu_items(name, category_id, price, description, image_url) VALUES
-('')
-
 
 Select * from categories;
+Select * from menu_items;

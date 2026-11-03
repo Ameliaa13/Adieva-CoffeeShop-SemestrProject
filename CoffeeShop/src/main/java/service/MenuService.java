@@ -14,5 +14,8 @@ public interface MenuService {
     List<MenuItemModel> getAllMenuItems();
     List<MenuItemModel> getItemsByCategory(Long categoryId);
     Optional<MenuItemModel> getMenuItemById(Long id);
+    void createMenuItem(MenuItemModel menuItem);
+    boolean updateMenuItemById(Long id, MenuItemModel menuItem);
+    boolean deleteMenuItemById(Long id);
 
 }

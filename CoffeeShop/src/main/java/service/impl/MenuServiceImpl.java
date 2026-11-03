@@ -43,4 +43,21 @@ public class MenuServiceImpl implements MenuService {
     public Optional<MenuItemModel> getMenuItemById(Long id) {
         return menuItemRepository.findById(id);
     }
+
+    @Override
+    public void createMenuItem(MenuItemModel menuItem) {
+        menuItemRepository.save(menuItem);
+    }
+
+    @Override
+    public boolean updateMenuItemById(Long id, MenuItemModel menuItem) {
+        return menuItemRepository.updateById(id, menuItem);
+    }
+
+    @Override
+    public boolean deleteMenuItemById(Long id) {
+        return menuItemRepository.deleteById(id);
+    }
+
+
 }

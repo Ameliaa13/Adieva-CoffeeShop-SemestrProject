@@ -72,7 +72,7 @@ public class CartItemRepositoryImpl implements CartItemRepository {
 
 
     @Override
-    public void addItem(Long userId, Long itemId) {
+    public void save(Long userId, Long itemId) {
         try(Connection connection = DataBaseConfig.getConnection()){
             addItem(connection, userId, itemId);
         }catch (SQLException e){
@@ -86,19 +86,18 @@ public class CartItemRepositoryImpl implements CartItemRepository {
 
             ps.executeUpdate();
         }
-
     }
 
     @Override
-    public Optional<CartItemModel> findByUserIdAndItemId(Long userId, Long itemId) {
+    public Optional<CartItemModel> findByTwoId(Long userId, Long itemId) {
         try(Connection connection = DataBaseConfig.getConnection()) {
-            return findByUserIdAndItemId(connection, userId, itemId);
+            return findByTwoId(connection, userId, itemId);
         }catch (SQLException e){
             throw new RuntimeException("Error finding item by userId and itemId in cart", e);
         }
     }
 
-    public Optional<CartItemModel> findByUserIdAndItemId(Connection connection, Long userId, Long itemId) throws SQLException{
+    public Optional<CartItemModel> findByTwoId(Connection connection, Long userId, Long itemId) throws SQLException{
         try(PreparedStatement ps = connection.prepareStatement(SQL_FIND_BY_USER_ID_ITEM_ID)){
             ps.setLong(1, userId);
             ps.setLong(2, itemId);
@@ -115,15 +114,15 @@ public class CartItemRepositoryImpl implements CartItemRepository {
     }
 
     @Override
-    public List<CartItemModel> findAllByUserId(Long id) {
+    public List<CartItemModel> findAll(Long id) {
         try(Connection connection = DataBaseConfig.getConnection()){
-            return findAllByUserId(connection, id);
+            return findAll(connection, id);
         }catch (SQLException e){
             throw new RuntimeException("Error finding menu item by user id in cart", e);
         }
     }
 
-    public List<CartItemModel> findAllByUserId(Connection connection, Long id) throws SQLException{
+    public List<CartItemModel> findAll(Connection connection, Long id) throws SQLException{
         try(PreparedStatement ps = connection.prepareStatement(SQL_FIND_ALL_BY_USER_ID)){
             ps.setLong(1, id);
 
@@ -155,15 +154,15 @@ public class CartItemRepositoryImpl implements CartItemRepository {
     }
 
     @Override
-    public boolean deleteItem(Long userId, Long itemId) {
+    public boolean deleteByTwoId(Long userId, Long itemId) {
         try(Connection connection = DataBaseConfig.getConnection()){
-            return deleteItem(connection, userId, itemId);
+            return deleteByTwoId(connection, userId, itemId);
         }catch (SQLException e){
             throw new RuntimeException("Error deleting item in cart", e);
         }
     }
 
-    public boolean deleteItem(Connection connection, Long userId, Long itemId) throws SQLException{
+    public boolean deleteByTwoId(Connection connection, Long userId, Long itemId) throws SQLException{
         try(PreparedStatement ps = connection.prepareStatement(SQL_DELETE_ITEM)){
             ps.setLong(1, userId);
             ps.setLong(2, itemId);

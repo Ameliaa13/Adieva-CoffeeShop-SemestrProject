@@ -43,5 +43,21 @@ public class SecurityFilter implements Filter {
         }else {
             httpResponse.sendRedirect(contextPath + "/sign-in");
         }
+
+        boolean isAdminPath = requestURI.equals(contextPath + "/admin") ||
+                requestURI.equals(contextPath + "/admin/");
+
+        if(isAdminPath){
+            if(user == null){
+                httpResponse.sendRedirect(contextPath + "/sign-in");
+                return;
+            }
+
+            if(user.getRole() == null || !user.getRole().equals("ADMIN")){
+                httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "У вас нет доступа к панели администратора");
+            }
+            return;
+        }
+
     }
 }
