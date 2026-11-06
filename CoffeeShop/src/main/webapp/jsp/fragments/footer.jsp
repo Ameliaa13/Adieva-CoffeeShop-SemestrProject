@@ -23,7 +23,6 @@
             <a href="<c:url value='/'/>">Главная</a>
             <a href="<c:url value='/menu'/>">Меню</a>
             <a href="<c:url value='/events'/>">Мероприятия</a>
-            <a href="<c:url value='/about'/>">О нас</a>
         </div>
 
         <div class="footer-column">

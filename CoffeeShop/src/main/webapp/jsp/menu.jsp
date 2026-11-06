@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<c:import url="/jsp/fragments/header.jsp"/>
+<c:import url="/jsp/fragments/role-header.jsp"/>
 
 <main class="menu-container">
     <h1>Наше меню</h1>

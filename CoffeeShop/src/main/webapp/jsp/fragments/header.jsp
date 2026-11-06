@@ -14,7 +14,6 @@
             <a href="<c:url value='/menu'/>">Меню</a>
             <a href="<c:url value='/promotions'/>">Акции</a>
             <a href="<c:url value='/events'/>">Мероприятия</a>
-            <a href="<c:url value='/about'/>">О нас</a>
         </nav>
 
         <div class="header-actions">

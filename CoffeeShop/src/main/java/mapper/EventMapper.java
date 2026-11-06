@@ -1,5 +1,7 @@
 package mapper;
 
+import enums.EventStatus;
+import enums.EventVisibility;
 import model.EventModel;
 
 import java.sql.ResultSet;
@@ -21,8 +23,8 @@ public class EventMapper {
                             .startTime(rs.getTimestamp("start_time").toLocalDateTime())
                             .durationMinutes(rs.getInt("duration_minutes"))
                             .capacity(rs.getInt("capacity"))
-                            .visibility(rs.getString("visibility"))
-                            .status(rs.getString("status"))
+                            .visibility(EventVisibility.valueOf(rs.getString("visibility")))
+                            .status(EventStatus.valueOf(rs.getString("status")))
                             .imageUrl(rs.getString("image_url"))
                     .build());
         }

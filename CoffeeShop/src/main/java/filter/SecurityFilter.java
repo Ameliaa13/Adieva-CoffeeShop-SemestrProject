@@ -25,6 +25,23 @@ public class SecurityFilter implements Filter {
         HttpSession session = httpRequest.getSession(false);
         UserModel user = (session != null) ? (UserModel) session.getAttribute("user") : null;
 
+        boolean isAdminPath = requestURI.equals(contextPath + "/admin") ||
+                requestURI.startsWith(contextPath + "/admin/");
+
+        if(isAdminPath){
+            if(user == null){
+                httpResponse.sendRedirect(contextPath + "/sign-in");
+                return;
+            }
+
+            if(user.getRole() == null || !user.getRole().equals("ADMIN")){
+                httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "У вас нет доступа к панели администратора");
+                return;
+            }
+            chain.doFilter(request, response);
+            return;
+        }
+
         boolean isPublicPage = requestURI.equals(contextPath + "/") ||
                 requestURI.equals(contextPath + "/sign-in") ||
                 requestURI.equals(contextPath + "/sign-up") ||
@@ -32,7 +49,9 @@ public class SecurityFilter implements Filter {
                 requestURI.equals(contextPath + "/menu") ||
                 requestURI.equals(contextPath + "/menu/item") ||
                 requestURI.equals(contextPath + "/events") ||
+                requestURI.equals(contextPath + "/event") ||
                 requestURI.equals(contextPath + "/promotions") ||
+                requestURI.equals(contextPath + "/promotion") ||
 
                 requestURI.startsWith(contextPath + "/css/") ||
                 requestURI.startsWith(contextPath + "/img/") ||
@@ -43,21 +62,5 @@ public class SecurityFilter implements Filter {
         }else {
             httpResponse.sendRedirect(contextPath + "/sign-in");
         }
-
-        boolean isAdminPath = requestURI.equals(contextPath + "/admin") ||
-                requestURI.equals(contextPath + "/admin/");
-
-        if(isAdminPath){
-            if(user == null){
-                httpResponse.sendRedirect(contextPath + "/sign-in");
-                return;
-            }
-
-            if(user.getRole() == null || !user.getRole().equals("ADMIN")){
-                httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "У вас нет доступа к панели администратора");
-            }
-            return;
-        }
-
     }
 }

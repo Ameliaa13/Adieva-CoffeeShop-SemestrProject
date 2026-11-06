@@ -71,6 +71,14 @@ CREATE TABLE IF NOT EXISTS events(
     CHECK ( status in('PLANNED', 'CANCELLED', 'COMPLETED') )
 );
 
+CREATE TABLE IF NOT EXISTS event_registrations(
+    event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE ,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    registered_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (event_id, user_id)
+);
+
 
 Select * from categories;
 Select * from menu_items;

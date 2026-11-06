@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="<c:url value='/css/events.css'/>">
 </head>
 <body>
-<c:import url="/jsp/fragments/header.jsp"/>
+<c:import url="/jsp/fragments/role-header.jsp"/>
 
 <main class="events-page">
     <header class="events-heading">
@@ -28,7 +28,12 @@
         <c:otherwise>
             <div class="event-list">
                 <c:forEach var="event" items="${events}">
-                    <article class="event-card">
+
+                    <c:url var="eventUrl" value="/event">
+                        <c:param name="id" value="${event.id}"/>
+                    </c:url>
+
+                    <a class="event-card" href="${eventUrl}">
                         <div class="event-image-container">
                             <c:choose>
                                 <c:when test="${not empty event.imageUrl}">
@@ -76,15 +81,10 @@
                                 </p>
                             </div>
 
-                            <c:if test="${not empty event.description}">
-                                <p class="event-description">
-                                    <c:out value="${event.description}"/>
-                                </p>
-                            </c:if>
 
                         </div>
 
-                    </article>
+                    </a>
 
                 </c:forEach>
             </div>

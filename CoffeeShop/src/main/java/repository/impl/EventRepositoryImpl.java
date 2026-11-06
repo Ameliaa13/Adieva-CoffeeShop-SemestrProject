@@ -63,8 +63,8 @@ public class EventRepositoryImpl implements EventRepository {
             ps.setTimestamp(3, Timestamp.valueOf(eventModel.getStartTime()));
             ps.setObject(4, eventModel.getDurationMinutes());
             ps.setInt(5, eventModel.getCapacity());
-            ps.setString(6, eventModel.getVisibility());
-            ps.setString(7, eventModel.getStatus());
+            ps.setString(6, eventModel.getVisibility().name());
+            ps.setString(7, eventModel.getStatus().name());
             ps.setString(8, eventModel.getImageUrl());
 
             ps.executeUpdate();
@@ -150,8 +150,8 @@ public class EventRepositoryImpl implements EventRepository {
             ps.setTimestamp(3, Timestamp.valueOf(eventModel.getStartTime()));
             ps.setObject(4, eventModel.getDurationMinutes());
             ps.setInt(5, eventModel.getCapacity());
-            ps.setString(6, eventModel.getVisibility());
-            ps.setString(7, eventModel.getStatus());
+            ps.setString(6, eventModel.getVisibility().name());
+            ps.setString(7, eventModel.getStatus().name());
             ps.setString(8, eventModel.getImageUrl());
             ps.setLong(9, id);
 

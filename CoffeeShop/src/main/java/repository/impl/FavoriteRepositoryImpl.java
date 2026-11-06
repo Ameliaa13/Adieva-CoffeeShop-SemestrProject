@@ -18,7 +18,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
 
     private FavoriteRepositoryImpl(){}
     private static class Holder{
-        private static FavoriteRepositoryImpl INSTANCE = new FavoriteRepositoryImpl();
+        private static final FavoriteRepositoryImpl INSTANCE = new FavoriteRepositoryImpl();
     }
     public static FavoriteRepositoryImpl getInstance(){
         return FavoriteRepositoryImpl.Holder.INSTANCE;
@@ -33,7 +33,11 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
             SELECT f.user_id,
                            f.menu_item_id, m.id AS id, m.name AS name,
                            m.category_id, m.price AS price, m.description AS description,
-                           m.image_url AS image_url
+                           m.image_url AS image_url,
+                           m.calories,
+                           m.proteins,
+                           m.fats,
+                           m.carbohydrates
                     FROM favorites f
                     JOIN menu_items m ON m.id = f.menu_item_id
                     WHERE f.user_id = ? AND f.menu_item_id = ?;
@@ -42,7 +46,11 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
             SELECT f.user_id,
                            f.menu_item_id, m.id AS id, m.name AS name,
                            m.category_id, m.price AS price, m.description AS description,
-                           m.image_url AS image_url
+                           m.image_url AS image_url,
+                           m.calories,
+                           m.proteins,
+                           m.fats,
+                           m.carbohydrates
                     FROM favorites f
                     JOIN menu_items m ON m.id = f.menu_item_id
                     WHERE f.user_id = ?

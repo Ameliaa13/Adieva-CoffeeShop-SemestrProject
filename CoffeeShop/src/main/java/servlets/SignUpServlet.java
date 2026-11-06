@@ -5,21 +5,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import repository.UserRepository;
-import repository.impl.UserRepositoryImpl;
 import service.AuthService;
 import service.impl.AuthServiceImpl;
 import utils.ErrorUtils;
+import utils.ValidationUtils;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 
 @WebServlet("/sign-up")
 public class SignUpServlet extends HttpServlet {
 
-    private final UserRepository userRepository = UserRepositoryImpl.getInstance();
     private final AuthService authService = AuthServiceImpl.getInstance();
 
     @Override
@@ -29,6 +26,7 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
 
         String email = req.getParameter("email");
         String password = req.getParameter("password");
@@ -36,25 +34,24 @@ public class SignUpServlet extends HttpServlet {
         String lastName = req.getParameter("last_name");
         String birthDateStr = req.getParameter("birth_date");
 
+        LocalDate birthDate = null;
+        if(birthDateStr != null && !birthDateStr.isBlank()){
+            try{
+                birthDate = LocalDate.parse(birthDateStr.trim());
+            }catch (DateTimeException e){
+                ErrorUtils.redirectToError(req, resp, "Некорректная дата рождения!");
+                return;
+            }
+        }
 
-        if(email == null || email.isBlank()||
-        password == null || password.isBlank() ||
-        firstName == null || firstName.isBlank() ||
-        lastName == null || lastName.isBlank() ||
-                birthDateStr == null || birthDateStr.isBlank() ) {
-            ErrorUtils.redirectToError(req, resp,"Все поля формы регистрации обязательны к заполнению!" );
+        try{
+            authService.register(email, password, firstName, lastName, birthDate);
+        }catch (ValidationUtils.ValidationException e ){
+            ErrorUtils.redirectToError(req, resp, e.getMessage());
             return;
         }
 
-        if(userRepository.existByEmail(email)){
-            ErrorUtils.redirectToError(req, resp, "Пользователь с почтой '" + email + "' уже существует!");
-            return;
-        }
-        LocalDate birthDate = LocalDate.parse(birthDateStr);
-
-        authService.register(email, password, firstName, lastName, birthDate, "USER");
-        //TODO: добавить путь
-        resp.sendRedirect(req.getContextPath() + "/menu");
+        resp.sendRedirect(req.getContextPath() + "/");
 
     }
 }

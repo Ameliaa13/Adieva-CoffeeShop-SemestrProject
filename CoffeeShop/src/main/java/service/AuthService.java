@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface AuthService {
 
-    void register(String email, String password, String firstName, String lastName, LocalDate birthDate, String role);
+    void register(String email, String password, String firstName, String lastName, LocalDate birthDate);
     Optional<UserModel> authenticate(String email, String password);
     Optional<UserModel> findByEmail(String email);
 }

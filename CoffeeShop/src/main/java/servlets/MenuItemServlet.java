@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.MenuItemModel;
 import service.MenuService;
 import service.impl.MenuServiceImpl;
+import utils.ValidationUtils;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -18,31 +19,52 @@ public class MenuItemServlet extends HttpServlet {
     private final MenuService menuService = MenuServiceImpl.getInstance();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(
+            HttpServletRequest req,
+            HttpServletResponse resp
+    ) throws ServletException, IOException {
+
         String idParameter = req.getParameter("id");
 
-        if(idParameter == null || idParameter.isBlank()){
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        if (idParameter == null || idParameter.isBlank()) {
+            resp.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "Не указан номер товара."
+            );
             return;
         }
+
         Long id;
 
         try {
-            id = Long.parseLong(idParameter);
-        }catch (NumberFormatException e){
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            id = Long.parseLong(idParameter.trim());
+        } catch (NumberFormatException e) {
+            resp.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "Некорректный номер товара."
+            );
             return;
         }
 
-        Optional<MenuItemModel> model = menuService.getMenuItemById(id);
+        try {
+            Optional<MenuItemModel> menuItem = menuService.getMenuItemById(id);
 
-        if(model.isEmpty()){
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return;
+            if (menuItem.isEmpty()) {
+                resp.sendError(
+                        HttpServletResponse.SC_NOT_FOUND,
+                        "Товар не найден."
+                );
+                return;
+            }
+
+            req.setAttribute("menuItem", menuItem.get());
+            req.getRequestDispatcher("/jsp/menu-item.jsp").forward(req, resp);
+
+        } catch (ValidationUtils.ValidationException e) {
+            resp.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    e.getMessage()
+            );
         }
-
-        req.setAttribute("menuItem", model.get());
-        req.getRequestDispatcher("/jsp/menu-item.jsp").forward(req, resp);
-
     }
 }

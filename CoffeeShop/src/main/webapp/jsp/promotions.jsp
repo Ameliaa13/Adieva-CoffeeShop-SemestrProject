@@ -1,68 +1,62 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Акции кофейни</title>
 
     <link rel="stylesheet" href="<c:url value='/css/common.css'/>">
-    <link rel="stylesheet" href="<c:url value='/css/events.css'/>">
+    <link rel="stylesheet" href="<c:url value='/css/promotions.css'/>">
 </head>
 <body>
 
-<c:import url="/jsp/fragments/header.jsp"/>
+<c:import url="/jsp/fragments/role-header.jsp"/>
 
-<main class="events-page">
-    <header class="events-heading">
-        <p class="events-eyebrow">Специальные предложения</p>
+<main class="promotions-page">
+    <header class="promotions-heading">
+        <p class="promotions-eyebrow">Специальные предложения</p>
         <h1>Наши акции</h1>
         <p>Заглядывай за кофе и не пропускай приятные предложения.</p>
     </header>
 
     <c:choose>
         <c:when test="${empty promotions}">
-            <p class="events-empty">
-                Сейчас активных акций нет. Загляните сюда немного позже!
+            <p class="promotions-empty">
+                Сейчас активных акций нет. Загляни сюда немного позже!
             </p>
         </c:when>
 
         <c:otherwise>
-            <div class="event-list">
+            <div class="promotion-list">
                 <c:forEach var="promotion" items="${promotions}">
                     <c:url var="promotionUrl" value="/promotion">
                         <c:param name="id" value="${promotion.id}"/>
                     </c:url>
 
-                    <a class="event-card" href="${promotionUrl}">
-                        <div class="event-image-container">
-                            <c:choose>
-                                <c:when test="${not empty promotion.imageUrl}">
-                                    <img
-                                            src="<c:url value='${promotion.imageUrl}'/>"
-                                            alt="<c:out value='${promotion.title}'/>"
-                                            class="event-image">
-                                </c:when>
+                    <a class="promotion-card" href="${promotionUrl}">
+                        <c:if test="${not empty promotion.imageUrl}">
+                            <img class="promotion-image"
+                                 src="<c:url value='${promotion.imageUrl}'/>"
+                                 alt="">
+                        </c:if>
 
-                                <c:otherwise>
-                                    <div class="event-image-placeholder">
-                                        Фото акции
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
+                        <span class="promotion-overlay" aria-hidden="true"></span>
 
-                        <div class="event-info">
-                            <p class="event-eyebrow">Акция</p>
+                        <div class="promotion-info">
+                            <p class="promotion-label">Акция</p>
 
-                            <h2><c:out value="${promotion.title}"/></h2>
+                            <h2>
+                                <c:out value="${promotion.title}"/>
+                            </h2>
 
-                            <p class="event-description">
+                            <p class="promotion-description">
                                 <c:out value="${promotion.shortDescription}"/>
                             </p>
 
-                            <p class="promotion-more">Подробнее →</p>
+                            <span class="promotion-more">Подробнее →</span>
                         </div>
                     </a>
                 </c:forEach>

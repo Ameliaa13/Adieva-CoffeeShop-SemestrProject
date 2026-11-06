@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpSession;
 import model.UserModel;
 import service.FavoriteService;
 import service.impl.FavoriteServiceImpl;
+import utils.ErrorUtils;
+import utils.ValidationUtils;
 
 import java.io.IOException;
 
@@ -22,7 +24,7 @@ public class FavoriteServlet extends HttpServlet {
 
         UserModel user = getSessionUser(req, resp);
 
-        if(user == null){
+        if (user == null) {
             return;
         }
 
@@ -35,25 +37,28 @@ public class FavoriteServlet extends HttpServlet {
 
         UserModel user = getSessionUser(req, resp);
 
-        if(user == null){
+        if (user == null) {
             return;
         }
 
         String action = req.getParameter("action");
 
-        try{
+        try {
             Long itemId = getRequiredLong(req, "itemId");
 
-            if("add".equals(action)){
+            if ("add".equals(action)) {
                 favoriteService.addItem(user.getId(), itemId);
             } else if ("delete".equals(action)) {
                 favoriteService.deleteItem(user.getId(), itemId);
-            }else {
+            } else {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        } catch (ValidationUtils.ValidationException e) {
+            ErrorUtils.redirectToError(req, resp, e.getMessage());
             return;
         }
 
@@ -69,20 +74,20 @@ public class FavoriteServlet extends HttpServlet {
     private UserModel getSessionUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession(false);
 
-        if(session == null || session.getAttribute("user") == null){
+        if (session == null || !(session.getAttribute("user") instanceof UserModel user)) {
             resp.sendRedirect(req.getContextPath() + "/sign-in");
             return null;
         }
-        return (UserModel) session.getAttribute("user");
+        return user;
     }
 
-    private Long getRequiredLong(HttpServletRequest req, String parameterName){
+    private Long getRequiredLong(HttpServletRequest req, String parameterName) {
         String value = req.getParameter(parameterName);
 
-        if(value == null || value.isBlank()){
+        if (value == null || value.isBlank()) {
             throw new NumberFormatException();
         }
 
-        return Long.parseLong(value);
+        return Long.parseLong(value.trim());
     }
 }

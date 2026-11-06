@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<c:import url="/jsp/fragments/header.jsp"/>
+<c:import url="/jsp/fragments/role-header.jsp"/>
 
 <main class="favorites-page">
     <header class="favorites-heading">

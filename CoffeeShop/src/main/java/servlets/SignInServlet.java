@@ -10,6 +10,7 @@ import model.UserModel;
 import service.AuthService;
 import service.impl.AuthServiceImpl;
 import utils.ErrorUtils;
+import utils.ValidationUtils;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -32,13 +33,14 @@ public class SignInServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-        if(email == null || email.isBlank() ||
-        password == null || password.isBlank()){
-            ErrorUtils.redirectToError(req, resp, "Все поля должны быть заполнены!");
+        Optional<UserModel> auth;
+
+        try{
+            auth = authService.authenticate(email, password);
+        }catch (ValidationUtils.ValidationException e){
+            ErrorUtils.redirectToError(req, resp, "Все поля должны быть заполнены!"); // либо ошибка e.getMessage(), на подумать оставлю
             return;
         }
-
-        Optional<UserModel> auth = authService.authenticate(email,password);
 
         if (auth.isEmpty()){
             ErrorUtils.redirectToError(req, resp, "Неверный логин или пароль!");
@@ -47,11 +49,26 @@ public class SignInServlet extends HttpServlet {
 
         UserModel user = auth.get();
 
+        HttpSession oldSession = req.getSession(false);
+        if (oldSession != null) {
+            oldSession.invalidate();
+        }
+
         HttpSession session = req.getSession(true);
-        session.setAttribute("user", user);
+        session.setAttribute("user", UserModel.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .birthDate(user.getBirthDate())
+                .role(user.getRole())
+                .build());
 
+        String destination = user.getRole() != null
+                && user.getRole().equalsIgnoreCase("ADMIN")
+                ? "/admin"
+                : "/";
 
-        //TODO: добавить путь к сайту
-        resp.sendRedirect(req.getContextPath() + "/menu");
+        resp.sendRedirect(req.getContextPath() + destination);
     }
 }

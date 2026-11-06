@@ -18,7 +18,7 @@ public class CartItemRepositoryImpl implements CartItemRepository {
 
     private CartItemRepositoryImpl(){}
     private static class Holder{
-        private static CartItemRepositoryImpl INSTANCE = new CartItemRepositoryImpl();
+        private static final CartItemRepositoryImpl INSTANCE = new CartItemRepositoryImpl();
     }
     public static CartItemRepositoryImpl getInstance(){
         return Holder.INSTANCE;
@@ -32,14 +32,18 @@ public class CartItemRepositoryImpl implements CartItemRepository {
             """;
     private static final String SQL_FIND_BY_USER_ID_ITEM_ID = """
             SELECT c.user_id,
-                                                                         c.menu_item_id,
-                                                                         c.quantity,
-                                                                         m.id AS id,
-                                                                         m.name AS name,
+                     c.menu_item_id,
+                     c.quantity,
+                     m.id AS id,
+                     m.name AS name,
                      m.category_id,
                      m.price AS price,
                      m.description AS description,
-                     m.image_url AS image_url
+                     m.image_url AS image_url,
+                     m.calories,
+                     m.proteins,
+                     m.fats,
+                     m.carbohydrates
                  FROM cart_items c
                  JOIN menu_items m ON m.id = c.menu_item_id
                  WHERE c.user_id = ? AND c.menu_item_id = ?;
@@ -53,7 +57,11 @@ public class CartItemRepositoryImpl implements CartItemRepository {
                       m.category_id,
                       m.price AS price,
                       m.description AS description,
-                      m.image_url AS image_url
+                      m.image_url AS image_url,
+                      m.calories,
+                      m.proteins,
+                      m.fats,
+                      m.carbohydrates
                  FROM cart_items c
                  JOIN menu_items m ON m.id = c.menu_item_id
                  WHERE c.user_id = ?

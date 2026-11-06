@@ -7,8 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.UserModel;
-import service.*;
-import service.impl.*;
+
 
 import java.io.IOException;
 
@@ -29,7 +28,7 @@ public class AdminServlet extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
-        req.getRequestDispatcher("/jsp/admin.jsp").forward(req, resp);
+        req.getRequestDispatcher("/jsp/admin/admin.jsp").forward(req, resp);
 
     }
 }

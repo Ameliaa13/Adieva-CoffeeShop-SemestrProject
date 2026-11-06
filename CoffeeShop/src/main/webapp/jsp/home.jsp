@@ -13,16 +13,22 @@
 </head>
 <body>
 
-<c:import url="/jsp/fragments/header.jsp"/>
+<c:import url="/jsp/fragments/role-header.jsp"/>
 
 <main class="home-page">
 
     <section class="home-slider" aria-label="Акции и ближайшее мероприятие">
-
         <div class="home-slides" id="home-slides">
 
             <c:forEach var="promotion" items="${promotions}" varStatus="loop">
                 <article class="home-slide ${loop.first ? 'is-active' : ''}">
+
+                    <c:if test="${not empty promotion.imageUrl}">
+                        <img class="home-slide-background"
+                             src="<c:url value='${promotion.imageUrl}'/>"
+                             alt="<c:out value='${promotion.title}'/>">
+                    </c:if>
+
                     <div class="home-slide-content">
                         <p class="home-eyebrow">Специальное предложение</p>
 
@@ -32,46 +38,41 @@
                             <c:out value="${promotion.shortDescription}"/>
                         </p>
 
-                        <a class="home-button"
-                           href="<c:url value='/promotions'/>">
+                        <a class="home-button" href="<c:url value='/promotions'/>">
                             Смотреть акции
                         </a>
                     </div>
-
-                    <c:if test="${not empty promotion.imageUrl}">
-                        <img class="home-slide-image"
-                             src="<c:url value='${promotion.imageUrl}'/>"
-                             alt="<c:out value='${promotion.title}'/>">
-                    </c:if>
                 </article>
             </c:forEach>
 
             <c:if test="${not empty nextEvent}">
                 <article class="home-slide ${empty promotions ? 'is-active' : ''}">
+
+                    <c:if test="${not empty nextEvent.imageUrl}">
+                        <img class="home-slide-background"
+                             src="<c:url value='${nextEvent.imageUrl}'/>"
+                             alt="<c:out value='${nextEvent.title}'/>">
+                    </c:if>
+
                     <div class="home-slide-content">
                         <p class="home-eyebrow">Ближайшее мероприятие</p>
 
                         <h2><c:out value="${nextEvent.title}"/></h2>
 
                         <p class="home-event-date">
-                                ${nextEvent.formattedDate} · ${nextEvent.formattedTime}
+                            <c:out value="${nextEvent.formattedDate}"/>
+                            ·
+                            <c:out value="${nextEvent.formattedTime}"/>
                         </p>
 
                         <p class="home-slide-description">
                             <c:out value="${nextEvent.description}"/>
                         </p>
 
-                        <a class="home-button"
-                           href="<c:url value='/events'/>">
+                        <a class="home-button" href="<c:url value='/events'/>">
                             Смотреть афишу
                         </a>
                     </div>
-
-                    <c:if test="${not empty nextEvent.imageUrl}">
-                        <img class="home-slide-image"
-                             src="<c:url value='${nextEvent.imageUrl}'/>"
-                             alt="<c:out value='${nextEvent.title}'/>">
-                    </c:if>
                 </article>
             </c:if>
 
@@ -79,10 +80,13 @@
                 <article class="home-slide is-active home-slide-welcome">
                     <div class="home-slide-content">
                         <p class="home-eyebrow">Кофе · книги · кино</p>
+
                         <h1>Место, где истории оживают</h1>
+
                         <p class="home-slide-description">
                             Заглядывай за любимым кофе и оставайся на уютный вечер.
                         </p>
+
                         <a class="home-button" href="<c:url value='/menu'/>">
                             Перейти в меню
                         </a>
@@ -109,14 +113,14 @@
 
     <section class="home-links" aria-label="Разделы сайта">
         <a class="home-link-card" href="<c:url value='/menu'/>">
-            <span class="home-link-icon">☕</span>
+            <span class="home-link-icon" aria-hidden="true">☕</span>
             <h2>Меню</h2>
             <p>Выбери напиток к своему вечеру</p>
             <span class="home-link-more">Посмотреть меню →</span>
         </a>
 
         <a class="home-link-card" href="<c:url value='/events'/>">
-            <span class="home-link-icon">🎬</span>
+            <span class="home-link-icon" aria-hidden="true">🎬</span>
             <h2>Мероприятия</h2>
             <p>Кино, книжные клубы и встречи</p>
             <span class="home-link-more">Открыть афишу →</span>
@@ -125,7 +129,7 @@
         <c:choose>
             <c:when test="${not empty sessionScope.user}">
                 <a class="home-link-card" href="<c:url value='/profile'/>">
-                    <span class="home-link-icon">♡</span>
+                    <span class="home-link-icon" aria-hidden="true">♡</span>
                     <h2>Твой профиль</h2>
                     <p>Переходи в личный кабинет</p>
                     <span class="home-link-more">Открыть профиль →</span>
@@ -134,7 +138,7 @@
 
             <c:otherwise>
                 <a class="home-link-card" href="<c:url value='/sign-up'/>">
-                    <span class="home-link-icon">✦</span>
+                    <span class="home-link-icon" aria-hidden="true">✦</span>
                     <h2>Присоединяйся</h2>
                     <p>Создай аккаунт, чтобы участвовать в жизни кофейни</p>
                     <span class="home-link-more">Регистрация →</span>
@@ -143,16 +147,56 @@
         </c:choose>
     </section>
 
-    <section class="home-about">
-        <div class="home-about-label">О кофейне</div>
-
-        <div class="home-about-content">
+    <section class="home-about" id="about">
+        <div class="home-about-intro">
+            <p class="home-about-eyebrow">О кофейне</p>
             <h2>Больше, чем просто кофе</h2>
+
             <p>
-                Это место для любимых напитков, хороших историй и уютных встреч.
-                Мы проводим кинопросмотры, книжные клубы и другие небольшие мероприятия.
+                Мы придумали кофейню, где любимые напитки встречаются
+                с хорошими историями. Здесь можно заглянуть за кофе,
+                познакомиться с новой книгой или провести вечер за просмотром фильма.
             </p>
-            <a href="<c:url value='/events'/>">Узнать о мероприятиях →</a>
+
+            <p>
+                Мы устраиваем небольшие мероприятия максимум для 15 гостей,
+                чтобы каждый мог почувствовать себя частью уютной компании.
+                А некоторые тематические вечера будут начинаться с загадки,
+                которая подскажет, что ждёт гостей.
+            </p>
+
+            <a class="home-about-link" href="<c:url value='/events'/>">
+                Посмотреть ближайшие мероприятия →
+            </a>
+        </div>
+
+        <div class="home-idea-cards">
+            <article class="home-idea-card">
+                <span class="home-idea-icon" aria-hidden="true">☕</span>
+                <h3>Любимый кофе</h3>
+                <p>
+                    Классические и авторские напитки, которые можно выбрать
+                    под настроение.
+                </p>
+            </article>
+
+            <article class="home-idea-card">
+                <span class="home-idea-icon" aria-hidden="true">📚</span>
+                <h3>Общие интересы</h3>
+                <p>
+                    Книжные клубы и встречи для тех, кому нравится обсуждать
+                    прочитанное и делиться впечатлениями.
+                </p>
+            </article>
+
+            <article class="home-idea-card">
+                <span class="home-idea-icon" aria-hidden="true">🎬</span>
+                <h3>Вечера с загадкой</h3>
+                <p>
+                    Кинопросмотры и тематические события, название которых
+                    можно попробовать разгадать заранее.
+                </p>
+            </article>
         </div>
     </section>
 
@@ -170,9 +214,9 @@
         slide.classList.contains("is-active")
     );
 
-    if (activeSlide < 0) {
+    if (activeSlide < 0 && slides.length > 0) {
         activeSlide = 0;
-        slides[0]?.classList.add("is-active");
+        slides[0].classList.add("is-active");
     }
 
     function showSlide(index) {

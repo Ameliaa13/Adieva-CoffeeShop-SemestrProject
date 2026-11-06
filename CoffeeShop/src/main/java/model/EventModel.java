@@ -1,5 +1,7 @@
 package model;
 
+import enums.EventStatus;
+import enums.EventVisibility;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,8 +22,8 @@ public class EventModel {
     private LocalDateTime startTime;
     private Integer durationMinutes;
     private Integer capacity;
-    private String visibility;
-    private String status;
+    private EventVisibility visibility;
+    private EventStatus status;
     private String imageUrl;
 
     public String getFormattedDate(){

@@ -15,7 +15,7 @@
 </head>
 <body class="product-page-body">
 
-<c:import url="/jsp/fragments/header.jsp"/>
+<c:import url="/jsp/fragments/role-header.jsp"/>
 
 <main class="product-page">
     <nav class="product-breadcrumb">

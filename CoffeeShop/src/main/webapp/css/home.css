@@ -19,12 +19,14 @@
 }
 
 .home-slide {
+    position: relative;
     display: none;
     min-height: 360px;
     align-items: center;
-    justify-content: space-between;
-    gap: 32px;
     padding: 48px 72px;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--coffee-dark);
 }
 
 .home-slide.is-active {
@@ -32,10 +34,36 @@
     animation: home-slide-in 0.35s ease;
 }
 
+/* Картинка заполняет весь слайд */
+.home-slide-background {
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Затемнение слева помогает читать текст поверх изображения */
+.home-slide::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: linear-gradient(
+            90deg,
+            rgba(52, 35, 28, 0.94) 0%,
+            rgba(52, 35, 28, 0.82) 42%,
+            rgba(52, 35, 28, 0.38) 75%,
+            rgba(52, 35, 28, 0.18) 100%
+    );
+    content: "";
+}
+
 .home-slide-content {
     position: relative;
     z-index: 1;
-    max-width: 560px;
+    width: min(620px, 72%);
 }
 
 .home-eyebrow {
@@ -50,6 +78,7 @@
 .home-slide h1,
 .home-slide h2 {
     margin: 0 0 14px;
+    color: #fffdf9;
     font-family: Georgia, "Times New Roman", serif;
     font-size: clamp(30px, 4vw, 46px);
     line-height: 1.15;
@@ -58,7 +87,7 @@
 .home-slide-description {
     max-width: 520px;
     margin: 0 0 24px;
-    color: #e6d9cd;
+    color: #f0e6dd;
     font-size: 16px;
     line-height: 1.7;
 }
@@ -71,15 +100,16 @@
 
 .home-button {
     display: inline-flex;
+    min-height: 46px;
     align-items: center;
     justify-content: center;
-    min-height: 46px;
     padding: 10px 20px;
     border: 1px solid #f0dfcb;
     border-radius: 7px;
     background: #f0dfcb;
     color: var(--coffee-dark);
     font-weight: bold;
+    text-decoration: none;
     transition: background var(--transition), color var(--transition);
 }
 
@@ -88,30 +118,27 @@
     color: #f0dfcb;
 }
 
-.home-slide-image {
-    width: min(38%, 390px);
-    height: 260px;
-    flex: 0 0 auto;
-    border-radius: 12px;
-    object-fit: cover;
-}
-
+/* Слайд-заглушка, когда нет активных акций и мероприятий */
 .home-slide-welcome {
     background:
             radial-gradient(circle at 80% 20%, rgba(165, 107, 73, 0.5), transparent 30%),
             linear-gradient(120deg, #49332b, #795644);
 }
 
+.home-slide-welcome::before {
+    background: transparent;
+}
+
 .slider-arrow {
     position: absolute;
     top: 50%;
-    z-index: 2;
+    z-index: 3;
     width: 42px;
     height: 42px;
     transform: translateY(-50%);
     border: 1px solid rgba(255, 253, 249, 0.5);
     border-radius: 50%;
-    background: rgba(35, 22, 16, 0.35);
+    background: rgba(35, 22, 16, 0.45);
     color: white;
     font-size: 28px;
     line-height: 1;
@@ -119,7 +146,7 @@
 }
 
 .slider-arrow:hover {
-    background: rgba(35, 22, 16, 0.7);
+    background: rgba(35, 22, 16, 0.75);
 }
 
 .slider-arrow-prev {
@@ -135,7 +162,7 @@
     right: 0;
     bottom: 18px;
     left: 0;
-    z-index: 2;
+    z-index: 3;
     display: flex;
     justify-content: center;
     gap: 8px;
@@ -147,7 +174,7 @@
     padding: 0;
     border: 0;
     border-radius: 50%;
-    background: rgba(255, 253, 249, 0.5);
+    background: rgba(255, 253, 249, 0.6);
     cursor: pointer;
 }
 
@@ -205,16 +232,23 @@
 
 .home-about {
     display: grid;
-    grid-template-columns: 0.7fr 2fr;
-    gap: 36px;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 38px;
     margin-top: 56px;
-    padding: 38px;
-    border-radius: 12px;
+    padding: clamp(28px, 5vw, 48px);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
     background: #eee3d8;
+    scroll-margin-top: 110px;
 }
 
-.home-about-label {
-    color: var(--coffee-medium);
+.home-about-intro {
+    align-self: center;
+}
+
+.home-about-eyebrow {
+    margin: 0 0 10px;
+    color: var(--coffee-accent);
     font-size: 13px;
     font-weight: bold;
     letter-spacing: 1.5px;
@@ -222,22 +256,70 @@
 }
 
 .home-about h2 {
-    margin: 0 0 12px;
+    margin: 0 0 16px;
     color: var(--coffee-dark);
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 30px;
+    font-size: clamp(28px, 3.5vw, 38px);
+    line-height: 1.2;
 }
 
-.home-about p {
-    max-width: 720px;
-    margin: 0 0 16px;
+.home-about-intro p:not(.home-about-eyebrow) {
+    margin: 0 0 14px;
     color: #62544b;
-    line-height: 1.7;
+    line-height: 1.75;
 }
 
-.home-about a {
+.home-about-link {
+    display: inline-block;
+    margin-top: 8px;
     color: var(--coffee-medium);
     font-weight: bold;
+}
+
+.home-about-link:hover {
+    color: var(--coffee-accent);
+}
+
+.home-idea-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.home-idea-card {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    column-gap: 14px;
+    align-items: start;
+    padding: 18px;
+    border: 1px solid rgba(121, 86, 68, 0.16);
+    border-radius: 12px;
+    background: var(--cream-light);
+}
+
+.home-idea-icon {
+    grid-row: span 2;
+    display: grid;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border-radius: 12px;
+    background: #f1e5d9;
+    font-size: 23px;
+}
+
+.home-idea-card h3 {
+    margin: 0;
+    color: var(--coffee-dark);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 19px;
+}
+
+.home-idea-card p {
+    margin: 5px 0 0;
+    color: #75675e;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 @keyframes home-slide-in {
@@ -252,24 +334,40 @@
     }
 }
 
+@media (max-width: 900px) {
+    .home-slide {
+        padding-right: 58px;
+        padding-left: 58px;
+    }
+
+    .home-about {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+}
+
 @media (max-width: 760px) {
     .home-page {
         width: min(100% - 32px, 560px);
         padding: 24px 0 44px;
     }
 
-    .home-slide,
-    .home-slide.is-active {
+    .home-slide {
         min-height: 460px;
-        flex-direction: column-reverse;
-        align-items: stretch;
-        justify-content: center;
-        padding: 36px 28px 56px;
+        align-items: center;
+        padding: 36px 38px 56px;
     }
 
-    .home-slide-image {
+    .home-slide-content {
         width: 100%;
-        height: 180px;
+    }
+
+    .home-slide::before {
+        background: linear-gradient(
+                90deg,
+                rgba(52, 35, 28, 0.91),
+                rgba(52, 35, 28, 0.62)
+        );
     }
 
     .home-links {
@@ -281,8 +379,8 @@
     }
 
     .home-about {
-        grid-template-columns: 1fr;
-        gap: 12px;
+        gap: 24px;
+        margin-top: 36px;
         padding: 26px;
     }
 
@@ -292,5 +390,33 @@
 
     .slider-arrow-next {
         right: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-slide {
+        min-height: 430px;
+        padding: 30px 28px 54px;
+    }
+
+    .home-slide h1,
+    .home-slide h2 {
+        font-size: 32px;
+    }
+
+    .home-about {
+        padding: 22px;
+    }
+
+    .home-idea-card {
+        grid-template-columns: 40px 1fr;
+        column-gap: 11px;
+        padding: 15px;
+    }
+
+    .home-idea-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 20px;
     }
 }

@@ -10,6 +10,7 @@ import service.EventService;
 import service.PromotionService;
 import service.impl.EventServiceImpl;
 import service.impl.PromotionServiceImpl;
+import enums.EventVisibility;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,7 +28,7 @@ public class HomeServlet extends HttpServlet {
         List<EventModel> upcomingEvents = eventService.getUpcomingEvents();
 
         EventModel nextEvent = upcomingEvents.stream()
-                .filter(event -> "OPEN".equalsIgnoreCase(event.getVisibility()))
+                .filter(event -> event.getVisibility() == EventVisibility.OPEN)
                 .findFirst()
                 .orElse(null);
 
