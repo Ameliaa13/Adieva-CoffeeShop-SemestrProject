@@ -8,7 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.EventModel;
 import model.UserModel;
+import service.OrderService;
 import service.ProfileService;
+import service.impl.OrderServiceImpl;
 import service.impl.ProfileServiceImpl;
 import utils.ValidationUtils;
 
@@ -19,6 +21,7 @@ import java.util.List;
 public class ProfileServlet extends HttpServlet {
 
     private final ProfileService profileService = ProfileServiceImpl.getInstance();
+    private final OrderService orderService = OrderServiceImpl.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -83,6 +86,7 @@ public class ProfileServlet extends HttpServlet {
 
             req.setAttribute("profile", profile);
             req.setAttribute("registeredEvents", registeredEvents);
+            req.setAttribute("orderHistory", orderService.getUserOrders(sessionUser.getId()));
             req.getRequestDispatcher("/jsp/profile.jsp").forward(req, resp);
         } catch (ValidationUtils.ValidationException e) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());

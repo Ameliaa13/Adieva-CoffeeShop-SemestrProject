@@ -1,6 +1,7 @@
 package service.impl;
 
 import enums.EventStatus;
+import enums.EventVisibility;
 import model.EventModel;
 import repository.EventRepository;
 import repository.impl.EventRepositoryImpl;
@@ -53,6 +54,15 @@ public class EventServiceImpl extends ValidationUtils<EventModel> implements Eve
                     "Запланированное мероприятие должно быть в будущем."
             );
         }
+
+        if(eventModel.getVisibility() == EventVisibility.SECRET){
+            String theme = requireNotBlank(eventModel.getRiddleTheme(), "riddleTheme").trim();
+
+            requireMaxLength(theme, 250, "riddleTheme");
+            eventModel.setRiddleTheme(theme);
+        }
+
+        requireMaxLength(eventModel.getAnswerAliases(), 2000, "answerAliases");
     }
     @Override
     public void createEvent(EventModel eventModel) {
@@ -74,6 +84,11 @@ public class EventServiceImpl extends ValidationUtils<EventModel> implements Eve
     @Override
     public List<EventModel> getUpcomingEvents() {
         return eventRepository.findAllUpcoming();
+    }
+
+    @Override
+    public List<EventModel> getUpcomingEventsForMembers() {
+        return eventRepository.findAllUpcomingForMembers();
     }
 
     @Override

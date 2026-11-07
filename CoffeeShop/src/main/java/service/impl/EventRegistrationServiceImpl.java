@@ -1,11 +1,15 @@
 package service.impl;
 
 import enums.EventRegistrationResult;
+import enums.EventVisibility;
+import model.EventModel;
 import model.EventRegistrationModel;
 import repository.EventRegistrationRepository;
 import repository.EventRepository;
+import repository.SecretRiddleRepository;
 import repository.impl.EventRegistrationRepositoryImpl;
 import repository.impl.EventRepositoryImpl;
+import repository.impl.SecretRiddleRepositoryImpl;
 import service.EventRegistrationService;
 import utils.ValidationUtils;
 
@@ -15,6 +19,7 @@ public class EventRegistrationServiceImpl extends ValidationUtils<EventRegistrat
 
     private final EventRegistrationRepository eventRegistrationRepository = EventRegistrationRepositoryImpl.getInstance();
     private final EventRepository eventRepository = EventRepositoryImpl.getInstance();
+    private final SecretRiddleRepository secretRiddleRepository = SecretRiddleRepositoryImpl.getInstance();
     private EventRegistrationServiceImpl() {}
     private static class Holder {
         private static final EventRegistrationServiceImpl INSTANCE = new EventRegistrationServiceImpl();
@@ -45,9 +50,7 @@ public class EventRegistrationServiceImpl extends ValidationUtils<EventRegistrat
     public EventRegistrationResult registerForEvent(Long userId, Long eventId) {
         createModel(userId, eventId);
 
-        if (eventRepository.findById(eventId).isEmpty()) {
-            throw error("eventId", "Мероприятие не найдено.");
-        }
+        requireSolvedSecretEvent(userId, eventId);
 
         return eventRegistrationRepository.register(userId, eventId);
     }
@@ -73,6 +76,17 @@ public class EventRegistrationServiceImpl extends ValidationUtils<EventRegistrat
     @Override
     public boolean cancelRegistration(Long userId, Long eventId) {
         createModel(userId, eventId);
+        requireSolvedSecretEvent(userId, eventId);
         return eventRegistrationRepository.cancelRegistration(userId, eventId);
+    }
+
+    private void requireSolvedSecretEvent(Long userId, Long eventId) {
+        EventModel event = eventRepository.findById(eventId)
+                .orElseThrow(() -> error("eventId", "Мероприятие не найдено."));
+
+        if (event.getVisibility() == EventVisibility.SECRET
+                && !secretRiddleRepository.hasSolved(userId, eventId)) {
+            throw error("eventId", "Сначала разгадай секретное мероприятие.");
+        }
     }
 }

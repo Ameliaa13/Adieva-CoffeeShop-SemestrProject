@@ -13,8 +13,10 @@ import model.EventModel;
 import model.UserModel;
 import service.EventRegistrationService;
 import service.EventService;
+import service.SecretRiddleService;
 import service.impl.EventRegistrationServiceImpl;
 import service.impl.EventServiceImpl;
+import service.impl.SecretRiddleServiceImpl;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -24,8 +26,8 @@ import java.util.Optional;
 public class EventServlet extends HttpServlet {
 
     private final EventService eventService = EventServiceImpl.getInstance();
-
     private final EventRegistrationService eventRegistrationService = EventRegistrationServiceImpl.getInstance();
+    private final SecretRiddleService secretRiddleService = SecretRiddleServiceImpl.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -34,7 +36,10 @@ public class EventServlet extends HttpServlet {
             return;
         }
 
-        req.setAttribute("events", eventService.getUpcomingEvents());
+        HttpSession session = req.getSession(false);
+        UserModel user = session == null ? null : (UserModel) session.getAttribute("user");
+
+        req.setAttribute("events", user == null ? eventService.getUpcomingEvents() : eventService.getUpcomingEventsForMembers());
         req.getRequestDispatcher("/jsp/events.jsp").forward(req, resp);
     }
 
@@ -43,9 +48,7 @@ public class EventServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
 
         HttpSession session = req.getSession(false);
-        UserModel user = session == null
-                ? null
-                : (UserModel) session.getAttribute("user");
+        UserModel user = session == null ? null : (UserModel) session.getAttribute("user");
 
         if (user == null) {
             resp.sendRedirect(req.getContextPath() + "/sign-in");
@@ -59,6 +62,18 @@ public class EventServlet extends HttpServlet {
         }
 
         String action = req.getParameter("action");
+
+        Optional<EventModel> eventOptional = eventService.getEventById(eventId);
+        if (eventOptional.isEmpty()) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        if (eventOptional.get().getVisibility() == EventVisibility.SECRET
+                && !secretRiddleService.hasSolvedEvent(user.getId(), eventId)) {
+            resp.sendRedirect(req.getContextPath() + "/secret-event?id=" + eventId);
+            return;
+        }
 
         if ("register".equals(action)) {
             EventRegistrationResult result = eventRegistrationService.registerForEvent(user.getId(), eventId);
@@ -93,13 +108,26 @@ public class EventServlet extends HttpServlet {
         }
 
         EventModel event = eventOptional.get();
-        int registeredCount = eventRegistrationService.getRegistrationCount(eventId);
-        int freePlaces = Math.max(0, event.getCapacity() - registeredCount);
 
         HttpSession session = req.getSession(false);
-        UserModel user = session == null
-                ? null
-                : (UserModel) session.getAttribute("user");
+        UserModel user = session == null ? null : (UserModel) session.getAttribute("user");
+
+        boolean secretEventSolved = false;
+        if (event.getVisibility() == EventVisibility.SECRET) {
+            if (user == null) {
+                resp.sendRedirect(req.getContextPath() + "/sign-in");
+                return;
+            }
+
+            secretEventSolved = secretRiddleService.hasSolvedEvent(user.getId(), eventId);
+            if (!secretEventSolved) {
+                resp.sendRedirect(req.getContextPath() + "/secret-event?id=" + eventId);
+                return;
+            }
+        }
+
+        int registeredCount = eventRegistrationService.getRegistrationCount(eventId);
+        int freePlaces = Math.max(0, event.getCapacity() - registeredCount);
 
         boolean registered = user != null && eventRegistrationService
                 .getRegistration(user.getId(), eventId)
@@ -107,14 +135,18 @@ public class EventServlet extends HttpServlet {
 
         boolean registrationAvailable =
                 event.getStatus() == EventStatus.PLANNED
-                        && event.getVisibility() == EventVisibility.OPEN
+                        && (event.getVisibility() == EventVisibility.OPEN || secretEventSolved)
                         && event.getStartTime().isAfter(LocalDateTime.now());
 
         req.setAttribute("event", event);
         req.setAttribute("freePlaces", freePlaces);
         req.setAttribute("registered", registered);
         req.setAttribute("canRegister", registrationAvailable && freePlaces > 0);
-        req.setAttribute("registrationMessage", getMessage(req.getParameter("registration")));
+        String registrationMessage = getMessage(req.getParameter("registration"));
+        if (secretEventSolved && "solved".equals(req.getParameter("riddle"))) {
+            registrationMessage = "Верно! Ты разгадала мероприятие. Теперь можно посмотреть подробности и записаться.";
+        }
+        req.setAttribute("registrationMessage", registrationMessage);
 
         req.getRequestDispatcher("/jsp/event-item.jsp").forward(req, resp);
     }

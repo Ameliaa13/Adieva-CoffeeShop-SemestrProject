@@ -54,7 +54,7 @@ public class EventRegistrationRepositoryImpl implements EventRegistrationReposit
             FROM events
             WHERE id = ?
               AND status = 'PLANNED'
-              AND visibility = 'OPEN'
+              AND visibility IN ('OPEN', 'SECRET')
               AND start_time > CURRENT_TIMESTAMP
             FOR UPDATE;
             """;
@@ -80,7 +80,49 @@ public class EventRegistrationRepositoryImpl implements EventRegistrationReposit
             throw new IllegalStateException("Не удалось записать пользователя на мероприятие: " + result);
         }
     }
+/*
+    public void save(Connection connection, Long userId, Long eventId){
+        try()
+    }*/
 
+    @Override
+    public EventRegistrationResult register(Long userId, Long eventId) {
+        try (Connection connection = DataBaseConfig.getConnection()) {
+
+            try {
+                Integer capacity = findAvailableEventCapacity(connection, eventId);
+
+                if (capacity == null) {
+                    connection.rollback();
+                    return EventRegistrationResult.EVENT_NOT_AVAILABLE;
+                }
+
+                if (findByTwoId(connection, userId, eventId).isPresent()) {
+                    connection.rollback();
+                    return EventRegistrationResult.ALREADY_REGISTERED;
+                }
+
+                int registeredCount = countByEventId(connection, eventId);
+
+                if (registeredCount >= capacity) {
+                    connection.rollback();
+                    return EventRegistrationResult.FULL;
+                }
+
+                insert(connection, userId, eventId);
+
+                connection.commit();
+                return EventRegistrationResult.REGISTERED;
+
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error registering user for event", e);
+        }
+    }
     @Override
     public Optional<EventRegistrationModel> findByTwoId(Long userId, Long eventId) {
         try (Connection connection = DataBaseConfig.getConnection()) {
@@ -154,45 +196,7 @@ public class EventRegistrationRepositoryImpl implements EventRegistrationReposit
         }
     }
 
-    @Override
-    public EventRegistrationResult register(Long userId, Long eventId) {
-        try (Connection connection = DataBaseConfig.getConnection()) {
-            connection.setAutoCommit(false);
 
-            try {
-                Integer capacity = findAvailableEventCapacity(connection, eventId);
-
-                if (capacity == null) {
-                    connection.rollback();
-                    return EventRegistrationResult.EVENT_NOT_AVAILABLE;
-                }
-
-                if (findByTwoId(connection, userId, eventId).isPresent()) {
-                    connection.rollback();
-                    return EventRegistrationResult.ALREADY_REGISTERED;
-                }
-
-                int registeredCount = countByEventId(connection, eventId);
-
-                if (registeredCount >= capacity) {
-                    connection.rollback();
-                    return EventRegistrationResult.FULL;
-                }
-
-                insert(connection, userId, eventId);
-
-                connection.commit();
-                return EventRegistrationResult.REGISTERED;
-
-            } catch (SQLException e) {
-                connection.rollback();
-                throw e;
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Error registering user for event", e);
-        }
-    }
 
     private Integer findAvailableEventCapacity(Connection connection, Long eventId) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement(SQL_LOCK_AVAILABLE_EVENT)) {

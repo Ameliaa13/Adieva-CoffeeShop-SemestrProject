@@ -12,6 +12,125 @@
     font-size: 36px;
     text-align: center;
 }
+.cart-summary-actions form {
+    margin: 0;
+}
+
+.checkout-button {
+    min-width: 190px;
+}
+
+.cart-checkout-message {
+    margin: 0 0 18px;
+    padding: 13px 16px;
+    border: 1px solid #b8d9c0;
+    border-radius: 9px;
+    background: #eff9f1;
+    color: #28633a;
+}
+
+.cart-checkout-error {
+    border-color: #e5b9b5;
+    background: #fff1ef;
+    color: #9d3737;
+}
+.order-complete-page {
+    width: min(100% - 40px, 720px);
+    margin: 0 auto;
+    padding: 56px 0 72px;
+}
+
+.order-complete-card {
+    padding: clamp(28px, 6vw, 52px);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: var(--cream-light);
+    box-shadow: 0 8px 24px rgba(35, 22, 16, 0.08);
+    text-align: center;
+}
+
+.order-complete-icon {
+    margin: 0 0 12px;
+    font-size: 42px;
+}
+
+.order-complete-eyebrow {
+    margin: 0 0 10px;
+    color: var(--coffee-medium);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.order-complete-card h1 {
+    margin: 0 0 16px;
+    color: var(--coffee-dark);
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+.order-complete-number {
+    color: var(--coffee-dark);
+    font-size: 18px;
+}
+
+.order-complete-date {
+    color: #75675e;
+}
+
+.order-complete-items {
+    margin-top: 26px;
+    padding: 16px 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.order-complete-item,
+.order-complete-total {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.order-complete-item {
+    padding: 7px 0;
+    color: #62564f;
+}
+
+.order-complete-total {
+    margin: 18px 0 0;
+    color: var(--coffee-dark);
+    font-size: 19px;
+}
+
+.order-complete-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 28px;
+    text-decoration: none;
+}
+
+.order-complete-actions a {
+    text-decoration: none;
+}
+
+@media (max-width: 520px) {
+    .order-complete-page {
+        width: calc(100% - 28px);
+        padding: 32px 0 48px;
+    }
+
+    .order-complete-actions {
+        flex-direction: column;
+    }
+
+    .order-complete-actions .cart-button {
+        width: 100%;
+    }
+}
 
 .cart-empty {
     padding: 56px 24px;

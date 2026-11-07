@@ -25,6 +25,8 @@ public class EventMapper {
                             .capacity(rs.getInt("capacity"))
                             .visibility(EventVisibility.valueOf(rs.getString("visibility")))
                             .status(EventStatus.valueOf(rs.getString("status")))
+                            .riddleTheme(rs.getString("riddle_theme"))
+                            .answerAliases(rs.getString("answer_aliases"))
                             .imageUrl(rs.getString("image_url"))
                     .build());
         }

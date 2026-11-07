@@ -19,6 +19,18 @@
 <main class="cart-page">
     <h1>Корзина</h1>
 
+    <c:if test="${param.checkout eq 'empty'}">
+        <p class="cart-checkout-message">
+            Корзина пуста — сначала добавь товары.
+        </p>
+    </c:if>
+
+    <c:if test="${param.checkout eq 'error'}">
+        <p class="cart-checkout-message cart-checkout-error">
+            Не удалось оформить заказ. Товары остались в корзине, попробуй ещё раз.
+        </p>
+    </c:if>
+
     <c:choose>
         <c:when test="${empty cartItems}">
             <section class="cart-empty">
@@ -143,6 +155,13 @@
                             Очистить корзину
                         </button>
                     </form>
+
+                    <form action="<c:url value='/checkout'/>" method="post">
+                        <button class="cart-button checkout-button" type="submit">
+                            Оформить заказ
+                        </button>
+                    </form>
+
                 </div>
             </section>
         </c:otherwise>

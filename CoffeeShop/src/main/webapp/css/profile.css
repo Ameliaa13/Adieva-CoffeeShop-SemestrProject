@@ -8,6 +8,53 @@
     margin: 0 auto 34px;
     text-align: center;
 }
+.order-history-list {
+    display: grid;
+    gap: 14px;
+}
+
+.order-history-card {
+    padding: 18px;
+    border: 1px solid #eadfd6;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.order-history-heading,
+.order-history-items li,
+.order-history-total {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.order-history-heading {
+    color: #4b3026;
+}
+
+.order-history-heading span {
+    color: #765b4d;
+    font-size: 14px;
+}
+
+.order-history-items {
+    display: grid;
+    gap: 8px;
+    margin: 16px 0;
+    padding: 14px 0;
+    border-top: 1px solid #eee5df;
+    border-bottom: 1px solid #eee5df;
+    list-style: none;
+}
+
+.order-history-items li {
+    color: #62564f;
+}
+
+.order-history-total {
+    margin: 0;
+    color: #4b3026;
+}
 
 .profile-eyebrow {
     margin: 0 0 10px;

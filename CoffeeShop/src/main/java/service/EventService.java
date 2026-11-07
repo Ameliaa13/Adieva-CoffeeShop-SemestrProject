@@ -15,6 +15,8 @@ public interface EventService {
 
     List<EventModel> getUpcomingEvents();
 
+    List<EventModel> getUpcomingEventsForMembers();
+
     boolean updateEventById(Long id, EventModel eventModel);
 
     boolean deleteEventById(Long id);

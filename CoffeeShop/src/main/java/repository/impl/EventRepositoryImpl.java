@@ -21,10 +21,12 @@ public class EventRepositoryImpl implements EventRepository {
     }
 
     private static final String SQL_SAVE = """
-            INSERT INTO events (title, description, start_time, duration_minutes,
-                                capacity, visibility, status, image_url)
-                                VALUES(?,?,?,?, ?,?,?,?);
-            """;
+        INSERT INTO events (
+            title, description, start_time, duration_minutes, capacity,
+            visibility, status, image_url, riddle_theme, answer_aliases
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        """;
     private static final String SQL_FIND_BY_ID = """
             SELECT * FROM events WHERE id = ? ;
             """;
@@ -35,16 +37,23 @@ public class EventRepositoryImpl implements EventRepository {
             DELETE FROM events WHERE id = ? ;
             """;
     private static final String SQL_UPDATE_BY_ID = """
-            UPDATE events
-            SET title = ?, description = ?, start_time = ?, duration_minutes = ?, 
-            capacity = ?, visibility = ?, status = ?, image_url = ?
-            WHERE id = ?; 
-            """;
+        UPDATE events
+        SET title = ?, description = ?, start_time = ?, duration_minutes = ?,
+            capacity = ?, visibility = ?, status = ?, image_url = ?,
+            riddle_theme = ?, answer_aliases = ?
+        WHERE id = ?;
+        """;
     private static final String SQL_FIND_ALL_UPCOMING = """
-            SELECT * FROM events WHERE status = 'PLANNED' AND start_time >= CURRENT_TIMESTAMP
+            SELECT * FROM events WHERE status = 'PLANNED' AND visibility = 'OPEN' AND start_time >= CURRENT_TIMESTAMP
             ORDER BY start_time ASC;
             """;
-
+    private static final String SQL_FIND_ALL_UPCOMING_FOR_MEMBERS = """
+            SELECT *
+            FROM events
+            WHERE status = 'PLANNED'
+              AND start_time >= CURRENT_TIMESTAMP
+            ORDER BY start_time ASC;
+            """;
 
     @Override
     public void save(EventModel eventModel) {
@@ -66,6 +75,8 @@ public class EventRepositoryImpl implements EventRepository {
             ps.setString(6, eventModel.getVisibility().name());
             ps.setString(7, eventModel.getStatus().name());
             ps.setString(8, eventModel.getImageUrl());
+            ps.setString(9, eventModel.getRiddleTheme());
+            ps.setString(10, eventModel.getAnswerAliases());
 
             ps.executeUpdate();
 
@@ -153,7 +164,9 @@ public class EventRepositoryImpl implements EventRepository {
             ps.setString(6, eventModel.getVisibility().name());
             ps.setString(7, eventModel.getStatus().name());
             ps.setString(8, eventModel.getImageUrl());
-            ps.setLong(9, id);
+            ps.setString(9, eventModel.getRiddleTheme());
+            ps.setString(10, eventModel.getAnswerAliases());
+            ps.setLong(11, id);
 
             return ps.executeUpdate() >0;
         }
@@ -177,4 +190,23 @@ public class EventRepositoryImpl implements EventRepository {
             }
         }
     }
+
+    @Override
+    public List<EventModel> findAllUpcomingForMembers(){
+        try(Connection connection = DataBaseConfig.getConnection()) {
+            return findAllUpcomingForMembers(connection);
+        }catch (SQLException e){
+            throw new RuntimeException("Error finding upcoming events", e);
+        }
+    }
+
+    private List<EventModel> findAllUpcomingForMembers(Connection connection) {
+        try (PreparedStatement ps = connection.prepareStatement(SQL_FIND_ALL_UPCOMING_FOR_MEMBERS);
+             ResultSet rs = ps.executeQuery()) {
+            return eventMapper.toEntity(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding upcoming events", e);
+        }
+    }
+
 }

@@ -29,18 +29,17 @@ public class AdminServletUtils {
         }
     }
 
-    public static Double requireDouble(HttpServletRequest req, String parameterName, String fieldTitle){
-
+    public static Double requireDouble(HttpServletRequest req, String parameterName, String fieldTitle) {
         String value = requireText(req, parameterName, fieldTitle);
 
-        try{
+        try {
             double number = Double.parseDouble(value);
 
-            if(number <= 0){
-                throw new IllegalArgumentException( "Значение поля «" + fieldTitle + "» должно быть больше нуля.");
+            if (!Double.isFinite(number) || number < 0) {
+                throw new IllegalArgumentException("Значение поля «" + fieldTitle + "» не может быть отрицательным.");
             }
             return number;
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             throw new IllegalArgumentException("В поле «" + fieldTitle + "» должно быть число.");
         }
     }
@@ -49,7 +48,6 @@ public class AdminServletUtils {
         if (value == null || value.isBlank()) {
             return null;
         }
-
         return value.trim();
     }
 

@@ -140,14 +140,31 @@
                 <input type="text"
                        name="imageUrl"
                        maxlength="500"
-                       placeholder="/img/events/event.jpg"
+                       placeholder="/img/event/bookEvent1.jpg"
                        value="<c:out value='${param.imageUrl != null ? param.imageUrl : editingEvent.imageUrl}'/>">
             </label>
 
             <label class="admin-field admin-field-wide">
-                <span>Описание</span>
+                <span>Описание мероприятия</span>
                 <textarea name="description"
                           rows="4"><c:out value="${param.description != null ? param.description : editingEvent.description}"/></textarea>
+            </label>
+
+            <label class="admin-field admin-field-wide">
+                <span>Тема загадки для секретного мероприятия</span>
+                <input type="text"
+                       name="riddleTheme"
+                       maxlength="250"
+                       placeholder="Например: роман «Джейн Эйр» и Шарлотта Бронте"
+                       value="<c:out value='${param.riddleTheme != null ? param.riddleTheme : editingEvent.riddleTheme}'/>">
+            </label>
+
+            <label class="admin-field admin-field-wide">
+                <span>Допустимые ответы, каждый с новой строки</span>
+                <textarea name="answerAliases"
+                          rows="3"
+                          maxlength="2000"
+                          placeholder="Шарлотта Бронте&#10;Джейн Эйр"><c:out value="${param.answerAliases != null ? param.answerAliases : editingEvent.answerAliases}"/></textarea>
             </label>
 
             <div class="admin-form-actions admin-field-wide">
@@ -179,6 +196,7 @@
             <c:when test="${empty events}">
                 <p class="admin-empty">Мероприятий пока нет.</p>
             </c:when>
+
             <c:otherwise>
                 <div class="admin-table-wrapper">
                     <table class="admin-table">
@@ -196,7 +214,9 @@
                         <tbody>
                         <c:forEach var="event" items="${events}">
                             <tr>
-                                <td><strong><c:out value="${event.title}"/></strong></td>
+                                <td>
+                                    <strong><c:out value="${event.title}"/></strong>
+                                </td>
 
                                 <td>
                                     <c:out value="${event.formattedDate}"/>
@@ -222,8 +242,12 @@
                                         <form action="<c:url value='/admin/events'/>"
                                               method="post"
                                               onsubmit="return confirm('Удалить это мероприятие?');">
-                                            <input type="hidden" name="action" value="delete">
-                                            <input type="hidden" name="id" value="${event.id}">
+                                            <input type="hidden"
+                                                   name="action"
+                                                   value="delete">
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="${event.id}">
 
                                             <button class="admin-button admin-button-danger admin-button-small"
                                                     type="submit">

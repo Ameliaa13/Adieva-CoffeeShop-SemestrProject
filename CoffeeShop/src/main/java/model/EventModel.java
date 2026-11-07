@@ -26,6 +26,9 @@ public class EventModel {
     private EventStatus status;
     private String imageUrl;
 
+    private String riddleTheme;
+    private String answerAliases;
+
     public String getFormattedDate(){
         if(startTime == null){
             return "";

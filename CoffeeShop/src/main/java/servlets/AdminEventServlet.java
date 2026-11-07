@@ -88,12 +88,13 @@ public class AdminEventServlet extends HttpServlet {
                 .title(AdminServletUtils.requireText(req, "title", "Название"))
                 .description(AdminServletUtils.emptyToNull(req.getParameter("description")))
                 .startTime(parseStartTime(req))
-                .durationMinutes(parseOptionalInteger(
-                        req.getParameter("durationMinutes"), "Длительность"))
+                .durationMinutes(parseOptionalInteger(req.getParameter("durationMinutes"), "Длительность"))
                 .capacity(parseRequiredInteger(req, "capacity", "Количество мест"))
                 .visibility(parseVisibility(req))
                 .status(parseStatus(req))
                 .imageUrl(AdminServletUtils.emptyToNull(req.getParameter("imageUrl")))
+                .riddleTheme(AdminServletUtils.emptyToNull(req.getParameter("riddleTheme")))
+                .answerAliases(AdminServletUtils.emptyToNull(req.getParameter("answerAliases")))
                 .build();
 
         if (idParameter == null || idParameter.isBlank()) {

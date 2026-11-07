@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -129,6 +130,63 @@
                                 <span class="registered-event-action">Подробнее →</span>
                             </span>
                         </a>
+                    </c:forEach>
+                </div>
+            </c:otherwise>
+        </c:choose>
+    </section>
+
+    <section class="profile-panel">
+        <div class="profile-section-heading">
+            <div>
+                <p class="profile-eyebrow">Покупки</p>
+                <h2>История заказов</h2>
+            </div>
+        </div>
+
+        <c:choose>
+            <c:when test="${empty orderHistory}">
+                <p class="profile-empty">
+                    Ты ещё не оформляла заказы.
+                </p>
+            </c:when>
+
+            <c:otherwise>
+                <div class="order-history-list">
+                    <c:forEach var="order" items="${orderHistory}">
+                        <article class="order-history-card">
+                            <div class="order-history-heading">
+                                <strong>Заказ №<c:out value="${order.id}"/></strong>
+                                <span><c:out value="${order.formattedCreatedAt}"/></span>
+                            </div>
+
+                            <ul class="order-history-items">
+                                <c:forEach var="item" items="${order.items}">
+                                    <li>
+                                    <span>
+                                        <c:out value="${item.itemName}"/> ×
+                                        <c:out value="${item.quantity}"/>
+                                    </span>
+                                        <strong>
+                                            <fmt:formatNumber
+                                                    value="${item.lineTotal}"
+                                                    minFractionDigits="2"
+                                                    maxFractionDigits="2"/> ₽
+                                        </strong>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+
+                            <p class="order-history-total">
+                                Итого:
+                                <strong>
+                                    <fmt:formatNumber
+                                            value="${order.totalPrice}"
+                                            minFractionDigits="2"
+                                            maxFractionDigits="2"/> ₽
+                                </strong>
+                            </p>
+                        </article>
                     </c:forEach>
                 </div>
             </c:otherwise>

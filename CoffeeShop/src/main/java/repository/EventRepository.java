@@ -9,4 +9,5 @@ public interface EventRepository extends CrudRepository<EventModel>{
 
     List<EventModel> findAllUpcoming();
 
+    List<EventModel> findAllUpcomingForMembers();
 }
