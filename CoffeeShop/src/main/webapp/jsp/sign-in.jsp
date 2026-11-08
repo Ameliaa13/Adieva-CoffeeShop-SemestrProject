@@ -32,6 +32,7 @@
     </c:if>
 
     <form method="post" action="${signInUrl}">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
         <div class="form-group">
             <label for="email">Логин</label>
             <input type="text"

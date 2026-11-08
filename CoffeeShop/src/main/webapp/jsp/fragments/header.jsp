@@ -29,6 +29,7 @@
                     <form action="<c:url value='/logout'/>"
                           method="post"
                           class="logout-form">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                         <button type="submit" class="header-link logout-button">
                             Выйти
                         </button>
