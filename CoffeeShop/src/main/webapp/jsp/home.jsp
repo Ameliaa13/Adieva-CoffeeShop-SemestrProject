@@ -65,10 +65,6 @@
                             <c:out value="${nextEvent.formattedTime}"/>
                         </p>
 
-<%--                        <p class="home-slide-description">--%>
-<%--                            <c:out value="${nextEvent.description}"/>--%>
-<%--                        </p>--%>
-
                         <a class="home-button" href="<c:url value='/events'/>">
                             Смотреть афишу
                         </a>

@@ -107,7 +107,6 @@ public class EventRegistrationRepositoryImpl implements EventRegistrationReposit
                 }
 
                 insert(connection, userId, eventId);
-
                 connection.commit();
                 return EventRegistrationResult.REGISTERED;
 
@@ -115,7 +114,6 @@ public class EventRegistrationRepositoryImpl implements EventRegistrationReposit
                 connection.rollback();
                 throw e;
             }
-
         } catch (SQLException e) {
             throw new RuntimeException("Error registering user for event", e);
         }

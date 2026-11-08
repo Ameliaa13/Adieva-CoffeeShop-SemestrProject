@@ -10,7 +10,6 @@ public class AdminServletUtils {
     public static String requireText(HttpServletRequest req, String parameterName, String fieldTitle){
 
         String value = req.getParameter(parameterName);
-
         if(value == null || value.isBlank()){
             throw new IllegalArgumentException("Заполни поле «" + fieldTitle + "».");
         }

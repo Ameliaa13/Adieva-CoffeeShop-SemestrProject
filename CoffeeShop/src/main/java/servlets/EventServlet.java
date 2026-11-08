@@ -47,9 +47,7 @@ public class EventServlet extends HttpServlet {
         HttpSession session = req.getSession(false);
         UserModel user = session == null ? null : (UserModel) session.getAttribute("user");
 
-        var events = user == null
-                ? eventService.getUpcomingEvents()
-                : eventService.getUpcomingEventsForMembers();
+        var events = user == null ? eventService.getUpcomingEvents() : eventService.getUpcomingEventsForMembers();
 
         Set<Long> solvedSecretEventIds = new HashSet<>();
         if (user != null) {

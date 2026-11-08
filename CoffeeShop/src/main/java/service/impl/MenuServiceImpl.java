@@ -46,7 +46,6 @@ public class MenuServiceImpl extends ValidationUtils<MenuItemModel> implements M
 
     public void validate(CategoryModel categoryModel) {
         requireNonNull(categoryModel, "categoryModel");
-
         requireNotBlank(categoryModel.getName(), "name");
         requireMaxLength(categoryModel.getName(), 50, "name");
     }

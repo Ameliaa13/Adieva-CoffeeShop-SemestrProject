@@ -30,7 +30,6 @@ public class CartItemServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         UserModel user = getSessionUser(req, resp);
-
         if (user == null) {
             return;
         }
@@ -41,8 +40,8 @@ public class CartItemServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserModel user = getSessionUser(req, resp);
 
+        UserModel user = getSessionUser(req, resp);
         if (user == null) {
             return;
         }

@@ -34,9 +34,7 @@ public class AdminMenuServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         req.setCharacterEncoding("UTF-8");
-
         String action = req.getParameter("action");
 
         try {
@@ -66,7 +64,6 @@ public class AdminMenuServlet extends HttpServlet {
     private void showAdminMenu(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         req.setAttribute("categories", menuService.getAllCategories());
-        //req.setAttribute("menuItems", menuService.getAllMenuItems());
 
         String filterCategoryId = req.getParameter("filterCategoryId");
         Long selectedCategoryId = null;

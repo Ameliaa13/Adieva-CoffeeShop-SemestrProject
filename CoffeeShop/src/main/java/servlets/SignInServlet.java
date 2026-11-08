@@ -35,10 +35,10 @@ public class SignInServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
 
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-
         Optional<UserModel> auth;
 
         try{
@@ -70,10 +70,8 @@ public class SignInServlet extends HttpServlet {
                 .role(user.getRole())
                 .build());
 
-        String destination = user.getRole() != null
-                && user.getRole().equalsIgnoreCase("ADMIN")
-                ? "/admin"
-                : "/";
+        String destination = user.getRole() != null && user.getRole().equalsIgnoreCase("ADMIN")
+                ? "/admin" : "/";
 
         resp.sendRedirect(req.getContextPath() + destination);
     }

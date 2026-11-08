@@ -31,7 +31,6 @@ public class OrderServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         UserModel user = getSessionUser(req, resp);
-
         if (user == null) {
             return;
         }
@@ -48,7 +47,6 @@ public class OrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         UserModel user = getSessionUser(req, resp);
-
         if (user == null) {
             return;
         }
@@ -60,9 +58,7 @@ public class OrderServlet extends HttpServlet {
 
         try {
             Long orderId = orderService.checkout(user.getId());
-            resp.sendRedirect(
-                    req.getContextPath() + "/order-success?id=" + orderId
-            );
+            resp.sendRedirect(req.getContextPath() + "/order-success?id=" + orderId);
         } catch (ValidationUtils.ValidationException e) {
             resp.sendRedirect(req.getContextPath() + "/cart?checkout=empty");
         } catch (RuntimeException e) {

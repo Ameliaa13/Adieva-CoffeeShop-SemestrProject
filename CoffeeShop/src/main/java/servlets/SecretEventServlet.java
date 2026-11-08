@@ -37,7 +37,6 @@ public class SecretEventServlet extends HttpServlet {
         }
 
         Long eventId = parseId(req.getParameter("id"));
-
         if(eventId == null){
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
@@ -53,6 +52,7 @@ public class SecretEventServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         req.setCharacterEncoding("UTF-8");
 
         HttpSession session = req.getSession(false);
@@ -75,7 +75,6 @@ public class SecretEventServlet extends HttpServlet {
 
         try{
             String action = req.getParameter("action");
-
             if("regenerate".equals(action)){
                 secretRiddleService .regenerate(user.getId(), eventId);
                 redirect(req, resp, eventId, "new-riddle");

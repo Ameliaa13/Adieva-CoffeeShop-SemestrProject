@@ -66,7 +66,6 @@ public class OllamaSecretRiddleGenerator implements SecretRiddleGenerator {
         for (int attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
             JsonNode generated = callOllama(createPrompt(theme, answer, previousRiddles, problem), 0.8);
             String riddle = generated.path("riddle").asText("").trim();
-
             problem = validate(riddle, answer, previousRiddles);
 
             if (problem == null && VERIFY_WITH_GUESS && !canBeGuessed(theme, answer, riddle)) {
@@ -79,7 +78,6 @@ public class OllamaSecretRiddleGenerator implements SecretRiddleGenerator {
                 return riddle;
             }
         }
-
         throw new IllegalStateException("Не удалось сгенерировать подходящую загадку. Последняя проблема: " + problem);
     }
 

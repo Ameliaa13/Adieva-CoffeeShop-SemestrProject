@@ -12,14 +12,10 @@ import java.util.Optional;
 public class PromotionRepositoryImpl implements PromotionRepository {
 
     private final PromotionMapper promotionMapper = new PromotionMapper();
-
-    private PromotionRepositoryImpl() {
-    }
-
+    private PromotionRepositoryImpl() {}
     private static class Holder {
         private static final PromotionRepositoryImpl INSTANCE = new PromotionRepositoryImpl();
     }
-
     public static PromotionRepositoryImpl getInstance() {
         return PromotionRepositoryImpl.Holder.INSTANCE;
     }
@@ -75,7 +71,6 @@ public class PromotionRepositoryImpl implements PromotionRepository {
             ps.executeUpdate();
 
         }
-
     }
 
     @Override

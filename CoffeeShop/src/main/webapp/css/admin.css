@@ -253,7 +253,6 @@
     font-style: italic;
 }
 
-/* Главная страница админ-панели */
 .admin-home {
     width: min(1120px, calc(100% - 40px));
     margin: 48px auto 64px;

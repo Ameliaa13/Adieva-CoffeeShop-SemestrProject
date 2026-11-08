@@ -12,17 +12,12 @@ import java.io.IOException;
 public class LogOutServlet extends HttpServlet {
 
     @Override
-    protected void doPost(
-            HttpServletRequest req,
-            HttpServletResponse resp
-    ) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         HttpSession session = req.getSession(false);
-
         if (session != null) {
             session.invalidate();
         }
-
         resp.sendRedirect(req.getContextPath() + "/sign-in");
     }
 }

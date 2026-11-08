@@ -39,7 +39,6 @@ public class PromotionServlet extends HttpServlet {
     private void showPromotion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String idParameter = req.getParameter("id");
-
         if (idParameter == null || idParameter.isBlank()) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;

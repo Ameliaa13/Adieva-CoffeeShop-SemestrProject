@@ -52,7 +52,9 @@ public class EventRepositoryImpl implements EventRepository {
             FROM events
             WHERE status = 'PLANNED'
               AND start_time >= CURRENT_TIMESTAMP
-            ORDER BY start_time ASC;
+            ORDER BY
+                CASE WHEN visibility = 'SECRET' THEN 1 ELSE 0 END,
+                start_time ASC;
             """;
 
     @Override
@@ -81,7 +83,6 @@ public class EventRepositoryImpl implements EventRepository {
             ps.executeUpdate();
 
         }
-
     }
 
     @Override

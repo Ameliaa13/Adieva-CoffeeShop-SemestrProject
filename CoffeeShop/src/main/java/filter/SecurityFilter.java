@@ -61,6 +61,15 @@ public class SecurityFilter implements Filter {
             return;
         }
 
+        boolean isAdmin = user != null && "ADMIN".equalsIgnoreCase(user.getRole());
+
+        boolean isCartOrFavorites = path.equals("/cart") || path.equals("/favorites");
+
+        if (isAdmin && isCartOrFavorites && "POST".equalsIgnoreCase(httpRequest.getMethod())) {
+            httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Администратору недоступно это действие.");
+            return;
+        }
+
         if (user != null || isPublic(path)) {
             chain.doFilter(request, response);
         } else {

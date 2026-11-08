@@ -77,7 +77,6 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
 
             ps.executeUpdate();
         }
-
     }
 
     @Override

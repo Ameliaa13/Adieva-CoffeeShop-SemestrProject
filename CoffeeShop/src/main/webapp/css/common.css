@@ -63,13 +63,6 @@ select {
     margin-bottom: 0px;
     border-radius: 50%;
 }
-/* Если вы хотите, чтобы картинка и подзаголовок стояли в одну линию (в строку) */
-/*
-.logo {
-  flex-direction: row;
-  gap: 10px;
-}
-*/
 
 .site-header {
     position: sticky;

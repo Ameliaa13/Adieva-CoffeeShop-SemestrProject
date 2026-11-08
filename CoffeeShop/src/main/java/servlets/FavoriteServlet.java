@@ -29,7 +29,6 @@ public class FavoriteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         UserModel user = getSessionUser(req, resp);
-
         if (user == null) {
             return;
         }
@@ -42,7 +41,6 @@ public class FavoriteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         UserModel user = getSessionUser(req, resp);
-
         if (user == null) {
             return;
         }

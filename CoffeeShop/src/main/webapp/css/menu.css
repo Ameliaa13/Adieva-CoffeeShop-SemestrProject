@@ -6,8 +6,6 @@ body {
     color: #333;
 }
 
-/* Страница меню */
-
 .menu-container {
     width: min(1200px, calc(100% - 48px));
     margin: 24px auto;
@@ -36,8 +34,6 @@ h1 {
     color: #6f4e37;
     font-size: 20px;
 }
-
-/* Карточки меню */
 
 .menu-grid {
     display: grid;
@@ -118,7 +114,6 @@ h1 {
     font-style: italic;
 }
 
-/* Избранное */
 
 .favorite-form {
     position: absolute;
@@ -151,7 +146,6 @@ h1 {
     color: #c43c56;
 }
 
-/* Корзина */
 
 .menu-card-cart {
     margin-top: auto;
@@ -241,7 +235,6 @@ h1 {
     background: #5a3d2b;
 }
 
-/* Страница отдельного товара */
 
 .product-page-body {
     background: #fff;
@@ -332,7 +325,6 @@ h1 {
     text-align: center;
 }
 
-/* Таблица КБЖУ */
 
 .nutrition {
     margin-top: 32px;
@@ -377,7 +369,6 @@ h1 {
     font-weight: bold;
 }
 
-/* Адаптация для экранов поменьше */
 
 @media (max-width: 760px) {
     .product-page {

@@ -26,7 +26,6 @@ public class AdminCategoryServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         req.setCharacterEncoding("UTF-8");
         showCategories(req, resp);
     }
@@ -35,7 +34,6 @@ public class AdminCategoryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         req.setCharacterEncoding("UTF-8");
-
         String action = req.getParameter("action");
 
         try {
@@ -46,7 +44,6 @@ public class AdminCategoryServlet extends HttpServlet {
             } else {
                 throw new IllegalArgumentException("Неизвестное действие.");
             }
-
             resp.sendRedirect(req.getContextPath() + "/admin/categories");
 
         } catch (ValidationUtils.ValidationException | IllegalArgumentException e) {
@@ -63,13 +60,11 @@ public class AdminCategoryServlet extends HttpServlet {
     private void showCategories(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         req.setAttribute("categories", menuService.getAllCategories());
-
         String idParameter = req.getParameter("id");
 
         if (idParameter != null && !idParameter.isBlank()) {
             try {
                 Long id = AdminServletUtils.requireLong(req, "id", "Номер категории");
-
                 menuService.getCategoryById(id).ifPresentOrElse(
                         category -> req.setAttribute("editingCategory", category),
                         () -> req.setAttribute("errorMessage", "Категория не найдена."));
@@ -84,7 +79,6 @@ public class AdminCategoryServlet extends HttpServlet {
 
     private void saveCategory(HttpServletRequest req) {
         String idParameter = req.getParameter("id");
-
         String name = AdminServletUtils.requireText(req, "name","Название категории");
 
         CategoryModel category = CategoryModel.builder()

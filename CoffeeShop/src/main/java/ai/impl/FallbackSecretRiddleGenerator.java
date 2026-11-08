@@ -10,9 +10,7 @@ import java.util.logging.Logger;
 public class FallbackSecretRiddleGenerator implements SecretRiddleGenerator {
 
     private static final Logger LOGGER = Logger.getLogger(FallbackSecretRiddleGenerator.class.getName());
-
     private final List<SecretRiddleGenerator> generators;
-
     public FallbackSecretRiddleGenerator(SecretRiddleGenerator... generators) {
         if (generators == null || generators.length == 0) {
             throw new IllegalArgumentException("Нужен хотя бы один генератор.");

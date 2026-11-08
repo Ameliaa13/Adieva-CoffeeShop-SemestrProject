@@ -25,18 +25,11 @@ public class MenuItemServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(
-            HttpServletRequest req,
-            HttpServletResponse resp
-    ) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String idParameter = req.getParameter("id");
-
         if (idParameter == null || idParameter.isBlank()) {
-            resp.sendError(
-                    HttpServletResponse.SC_BAD_REQUEST,
-                    "Не указан номер товара."
-            );
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Не указан номер товара.");
             return;
         }
 
@@ -45,10 +38,7 @@ public class MenuItemServlet extends HttpServlet {
         try {
             id = Long.parseLong(idParameter.trim());
         } catch (NumberFormatException e) {
-            resp.sendError(
-                    HttpServletResponse.SC_BAD_REQUEST,
-                    "Некорректный номер товара."
-            );
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Некорректный номер товара.");
             return;
         }
 
@@ -56,10 +46,7 @@ public class MenuItemServlet extends HttpServlet {
             Optional<MenuItemModel> menuItem = menuService.getMenuItemById(id);
 
             if (menuItem.isEmpty()) {
-                resp.sendError(
-                        HttpServletResponse.SC_NOT_FOUND,
-                        "Товар не найден."
-                );
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Товар не найден.");
                 return;
             }
 
@@ -67,10 +54,7 @@ public class MenuItemServlet extends HttpServlet {
             req.getRequestDispatcher("/jsp/menu-item.jsp").forward(req, resp);
 
         } catch (ValidationUtils.ValidationException e) {
-            resp.sendError(
-                    HttpServletResponse.SC_BAD_REQUEST,
-                    e.getMessage()
-            );
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
 }

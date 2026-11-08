@@ -64,11 +64,9 @@ public class SecretRiddleRepositoryImpl implements SecretRiddleRepository {
             """;
 
     private SecretRiddleRepositoryImpl() {}
-
     private static class Holder {
         private static final SecretRiddleRepositoryImpl INSTANCE = new SecretRiddleRepositoryImpl();
     }
-
     public static SecretRiddleRepositoryImpl getInstance() {
         return Holder.INSTANCE;
     }
@@ -82,9 +80,7 @@ public class SecretRiddleRepositoryImpl implements SecretRiddleRepository {
 
             try (ResultSet rs = ps.executeQuery()) {
                 List<SecretRiddleModel> result = mapper.toEntity(rs);
-                return result.isEmpty()
-                        ? Optional.empty()
-                        : Optional.of(result.getFirst());
+                return result.isEmpty() ? Optional.empty() : Optional.of(result.getFirst());
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error finding current secret riddle", e);
@@ -157,7 +153,6 @@ public class SecretRiddleRepositoryImpl implements SecretRiddleRepository {
                 if ("23505".equals(e.getSQLState())) {
                     return false;
                 }
-
                 throw e;
             }
         } catch (SQLException e) {

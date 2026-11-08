@@ -34,7 +34,6 @@ public class EventServiceImpl extends ValidationUtils<EventModel> implements Eve
         String title = requireNotBlank(eventModel.getTitle(), "title").trim();
         requireMaxLength(title, 50, "title");
         eventModel.setTitle(title);
-        //requireNotBlank(eventModel.getDescription(), "description");
         requireNonNull(eventModel.getStartTime(), "startTime");
         requireNonNull(eventModel.getStatus(), "status");
         requireNonNull(eventModel.getVisibility(), "visibility");
@@ -49,15 +48,11 @@ public class EventServiceImpl extends ValidationUtils<EventModel> implements Eve
 
         if (eventModel.getStatus() == EventStatus.PLANNED
                 && !eventModel.getStartTime().isAfter(LocalDateTime.now())) {
-            throw error(
-                    "startTime",
-                    "Запланированное мероприятие должно быть в будущем."
-            );
+            throw error("startTime", "Запланированное мероприятие должно быть в будущем.");
         }
 
         if(eventModel.getVisibility() == EventVisibility.SECRET){
             String theme = requireNotBlank(eventModel.getRiddleTheme(), "riddleTheme").trim();
-
             requireMaxLength(theme, 250, "riddleTheme");
             eventModel.setRiddleTheme(theme);
         }

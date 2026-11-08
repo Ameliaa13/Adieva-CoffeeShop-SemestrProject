@@ -75,10 +75,7 @@ public class GigaChatSecretRiddleGenerator implements SecretRiddleGenerator {
         String problem = null;
 
         for (int attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-            String content = callGigaChat(
-                    createPrompt(theme, answer, previousRiddles, problem),
-                    0.8
-            );
+            String content = callGigaChat(createPrompt(theme, answer, previousRiddles, problem), 0.8);
             String riddle = extractRiddle(content);
 
             problem = validate(riddle, answer, previousRiddles);
@@ -94,9 +91,7 @@ public class GigaChatSecretRiddleGenerator implements SecretRiddleGenerator {
             }
         }
 
-        throw new IllegalStateException(
-                "Не удалось сгенерировать подходящую загадку. Последняя проблема: " + problem
-        );
+        throw new IllegalStateException("Не удалось сгенерировать подходящую загадку. Последняя проблема: " + problem);
     }
 
     private String callGigaChat(String prompt, double temperature) {
@@ -211,7 +206,6 @@ public class GigaChatSecretRiddleGenerator implements SecretRiddleGenerator {
 
                 accessToken = newAccessToken;
                 accessTokenExpiresAt = System.currentTimeMillis() + TOKEN_CACHE_TIME_MILLIS;
-
                 return accessToken;
             } catch (IOException e) {
                 throw new IllegalStateException("Не удалось обработать ответ авторизации GigaChat.", e);
@@ -268,7 +262,6 @@ public class GigaChatSecretRiddleGenerator implements SecretRiddleGenerator {
                     .append(previousProblem)
                     .append("\nИсправь это в новой загадке.\n");
         }
-
         return prompt.toString();
     }
 
