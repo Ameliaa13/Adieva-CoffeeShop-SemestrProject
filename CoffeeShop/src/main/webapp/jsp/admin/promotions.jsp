@@ -49,6 +49,7 @@
     <form action="<c:url value='/admin/promotions'/>"
           method="post"
           class="admin-form">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
 
       <input type="hidden" name="action" value="save">
 
@@ -197,6 +198,7 @@
                     <form action="<c:url value='/admin/promotions'/>"
                           method="post"
                           onsubmit="return confirm('Удалить эту акцию?');">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                       <input type="hidden" name="action" value="delete">
                       <input type="hidden" name="id" value="${promotion.id}">
 

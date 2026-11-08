@@ -32,6 +32,7 @@
     </c:if>
 
     <form method="post" action="${signUpUrl}">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
         <div class="form-group">
             <label for="email">Почта</label>
             <input type="text" id="email" name="email"

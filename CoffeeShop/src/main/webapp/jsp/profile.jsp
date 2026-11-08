@@ -39,6 +39,7 @@
         <h2>Личные данные</h2>
 
         <form class="profile-form" action="<c:url value='/profile'/>" method="post">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
             <label class="profile-field">
                 <span>Имя</span>
                 <input

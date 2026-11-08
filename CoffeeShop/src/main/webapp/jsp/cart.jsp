@@ -98,6 +98,7 @@
                         <form class="cart-quantity-form"
                               action="<c:url value='/cart'/>"
                               method="post">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                             <input type="hidden" name="action" value="update">
                             <input type="hidden" name="itemId"
                                    value="${cartItem.menuItemId}">
@@ -120,6 +121,7 @@
                         </form>
 
                         <form action="<c:url value='/cart'/>" method="post">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="itemId"
                                    value="${cartItem.menuItemId}">
@@ -149,6 +151,7 @@
                     </a>
 
                     <form action="<c:url value='/cart'/>" method="post">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                         <input type="hidden" name="action" value="clear">
                         <button class="cart-button cart-button-secondary"
                                 type="submit">
@@ -157,6 +160,7 @@
                     </form>
 
                     <form action="<c:url value='/checkout'/>" method="post">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                         <button class="cart-button checkout-button" type="submit">
                             Оформить заказ
                         </button>

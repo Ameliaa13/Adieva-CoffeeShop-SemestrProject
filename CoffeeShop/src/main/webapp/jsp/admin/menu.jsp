@@ -50,6 +50,7 @@
         <form action="<c:url value='/admin/menu'/>"
               method="post"
               class="admin-form">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
 
             <input type="hidden"
                    name="action"
@@ -279,6 +280,7 @@
                                         <form action="<c:url value='/admin/menu'/>"
                                               method="post"
                                               onsubmit="return confirm('Удалить этот товар?');">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                                             <input type="hidden"
                                                    name="action"
                                                    value="delete">

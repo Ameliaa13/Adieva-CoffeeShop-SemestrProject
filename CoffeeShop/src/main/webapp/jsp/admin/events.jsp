@@ -58,6 +58,7 @@
         <form action="<c:url value='/admin/events'/>"
               method="post"
               class="admin-form">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
 
             <input type="hidden" name="action" value="save">
 
@@ -242,6 +243,7 @@
                                         <form action="<c:url value='/admin/events'/>"
                                               method="post"
                                               onsubmit="return confirm('Удалить это мероприятие?');">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                                             <input type="hidden"
                                                    name="action"
                                                    value="delete">

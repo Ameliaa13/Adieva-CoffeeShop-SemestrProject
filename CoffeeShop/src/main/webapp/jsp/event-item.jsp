@@ -106,6 +106,7 @@
                         </p>
 
                         <form action="<c:url value='/event'/>" method="post">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                             <input type="hidden" name="id" value="<c:out value='${event.id}'/>">
                             <input type="hidden" name="action" value="cancel">
                             <button class="event-cancel-button" type="submit">
@@ -116,6 +117,7 @@
 
                     <c:when test="${canRegister}">
                         <form action="<c:url value='/event'/>" method="post">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                             <input type="hidden" name="id" value="<c:out value='${event.id}'/>">
                             <input type="hidden" name="action" value="register">
                             <button class="event-detail-button" type="submit">

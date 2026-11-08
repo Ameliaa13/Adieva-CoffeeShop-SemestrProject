@@ -49,6 +49,7 @@
     <form action="<c:url value='/admin/categories'/>"
           method="post"
           class="admin-form">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
 
       <input type="hidden" name="action" value="save">
 
@@ -130,6 +131,7 @@
                     <form action="<c:url value='/admin/categories'/>"
                           method="post"
                           onsubmit="return confirm('Удалить эту категорию?');">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                       <input type="hidden"
                              name="action"
                              value="delete">

@@ -60,6 +60,7 @@
                                     <form class="favorite-form"
                                           action="<c:url value='/favorites'/>"
                                           method="post">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                                         <input type="hidden"
                                                name="itemId"
                                                value="${item.id}">
@@ -114,6 +115,7 @@
                                             <div class="quantity-controls">
                                                 <form action="<c:url value='/cart'/>"
                                                       method="post">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                                                     <input type="hidden"
                                                            name="itemId"
                                                            value="${item.id}">
@@ -150,6 +152,7 @@
 
                                                 <form action="<c:url value='/cart'/>"
                                                       method="post">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                                                     <input type="hidden"
                                                            name="action"
                                                            value="add">
@@ -172,6 +175,7 @@
                                         <c:otherwise>
                                             <form action="<c:url value='/cart'/>"
                                                   method="post">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                                                 <input type="hidden"
                                                        name="action"
                                                        value="add">

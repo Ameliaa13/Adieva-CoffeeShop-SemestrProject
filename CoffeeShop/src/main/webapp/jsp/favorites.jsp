@@ -81,6 +81,7 @@
                                 <form class="favorite-toggle-form"
                                       action="<c:url value='/favorites'/>"
                                       method="post">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                                     <input type="hidden" name="action" value="delete">
                                     <input type="hidden"
                                            name="itemId"
@@ -97,6 +98,7 @@
                                 <form class="favorite-cart-form"
                                       action="<c:url value='/cart'/>"
                                       method="post">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                                     <input type="hidden" name="action" value="add">
                                     <input type="hidden"
                                            name="itemId"
