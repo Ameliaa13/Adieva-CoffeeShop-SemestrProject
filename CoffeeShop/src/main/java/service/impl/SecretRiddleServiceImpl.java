@@ -12,7 +12,7 @@ import ai.SecretRiddleGenerator;
 import service.SecretRiddleService;
 import utils.ValidationUtils;
 import ai.impl.FallbackSecretRiddleGenerator;
-import ai.impl.GeminiSecretRiddleGenerator;
+import ai.impl.GigaChatSecretRiddleGenerator;
 import ai.impl.OllamaSecretRiddleGenerator;
 
 
@@ -23,24 +23,22 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-public class SecretRiddleServiceImpl
-        extends ValidationUtils<SecretRiddleModel>
-        implements SecretRiddleService {
+public class SecretRiddleServiceImpl extends ValidationUtils<SecretRiddleModel> implements SecretRiddleService {
 
     private static final int MAX_GENERATION_ATTEMPTS = 5;
 
     private final EventRepository eventRepository = EventRepositoryImpl.getInstance();
     private final SecretRiddleRepository riddleRepository = SecretRiddleRepositoryImpl.getInstance();
 
-    private final SecretRiddleGenerator riddleGenerator = new FallbackSecretRiddleGenerator(new GeminiSecretRiddleGenerator(), new OllamaSecretRiddleGenerator()
+    private final SecretRiddleGenerator riddleGenerator = new FallbackSecretRiddleGenerator(
+            new GigaChatSecretRiddleGenerator(),
+            new OllamaSecretRiddleGenerator()
     );
 
     private SecretRiddleServiceImpl() {}
-
     private static class Holder {
         private static final SecretRiddleServiceImpl INSTANCE = new SecretRiddleServiceImpl();
     }
-
     public static SecretRiddleServiceImpl getInstance() {
         return Holder.INSTANCE;
     }
@@ -65,8 +63,7 @@ public class SecretRiddleServiceImpl
             throw error("eventId", "Это не секретное мероприятие.");
         }
 
-        if (event.getStatus() != EventStatus.PLANNED
-                || !event.getStartTime().isAfter(LocalDateTime.now())) {
+        if (event.getStatus() != EventStatus.PLANNED || !event.getStartTime().isAfter(LocalDateTime.now())) {
             throw error("eventId", "Это мероприятие сейчас недоступно.");
         }
 
@@ -80,7 +77,6 @@ public class SecretRiddleServiceImpl
         EventModel event = getSecretEvent(eventId);
 
         Optional<SecretRiddleModel> current = riddleRepository.findCurrent(userId, eventId);
-
         return current.orElseGet(() -> generateUnique(userId, event));
     }
 
@@ -91,7 +87,7 @@ public class SecretRiddleServiceImpl
     }
 
     private SecretRiddleModel generateUnique(Long userId, EventModel event) {
-        List<String> history = riddleRepository.findHistory(userId, event.getId());
+        List<String> history = new ArrayList<>(riddleRepository.findHistory(userId, event.getId()));
 
         for (int attempt = 0; attempt < MAX_GENERATION_ATTEMPTS; attempt++) {
             String text = riddleGenerator.generate(
@@ -114,21 +110,14 @@ public class SecretRiddleServiceImpl
 
             String riddleHash = createHash(text);
 
-            boolean saved = riddleRepository.saveAsCurrent(
-                    userId,
-                    event.getId(),
-                    text,
-                    riddleHash
-            );
+            boolean saved = riddleRepository.saveAsCurrent(userId, event.getId(), text, riddleHash);
 
             if (saved) {
                 return riddleRepository.findCurrent(userId, event.getId())
                         .orElseThrow(() -> new IllegalStateException("Загадка не найдена после сохранения."));
             }
-
             history.add(text);
         }
-
         throw new IllegalStateException("Не удалось получить новую уникальную загадку. Попробуй ещё раз.");
     }
 
@@ -158,13 +147,11 @@ public class SecretRiddleServiceImpl
         for (String accepted : acceptedAnswers) {
             String normalizedAccepted = normalize(accepted);
 
-            if (!normalizedAccepted.isBlank()
-                    && (" " + normalizedAnswer + " ").contains(" " + normalizedAccepted + " ")) {
+            if (!normalizedAccepted.isBlank() && (" " + normalizedAnswer + " ").contains(" " + normalizedAccepted + " ")) {
                 riddleRepository.markSolved(userId, eventId);
                 return true;
             }
         }
-
         return false;
     }
 
@@ -177,7 +164,6 @@ public class SecretRiddleServiceImpl
 
     private boolean containsAnswer(String riddleText, EventModel event) {
         String normalizedRiddle = " " + normalize(riddleText) + " ";
-
         List<String> answers = new ArrayList<>();
         answers.add(event.getTitle());
 
@@ -215,5 +201,4 @@ public class SecretRiddleServiceImpl
     private String createHash(String text) {
         return "a" + normalize(text).hashCode();
     }
-
 }

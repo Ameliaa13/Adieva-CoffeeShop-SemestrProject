@@ -6,9 +6,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import listener.Services;
 import model.UserModel;
 import service.FavoriteService;
-import service.impl.FavoriteServiceImpl;
 import utils.ErrorUtils;
 import utils.ValidationUtils;
 
@@ -17,7 +17,13 @@ import java.io.IOException;
 @WebServlet("/favorites")
 public class FavoriteServlet extends HttpServlet {
 
-    private final FavoriteService favoriteService = FavoriteServiceImpl.getInstance();
+    private FavoriteService favoriteService;
+
+    @Override
+    public void init() {
+        Services services = Services.from(getServletContext());
+        favoriteService = services.get(FavoriteService.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

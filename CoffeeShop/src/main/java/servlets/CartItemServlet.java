@@ -6,9 +6,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import listener.Services;
 import model.UserModel;
 import service.CartItemService;
-import service.impl.CartItemServiceImpl;
 import utils.ErrorUtils;
 import utils.ValidationUtils;
 
@@ -18,7 +18,13 @@ import java.io.IOException;
 @WebServlet("/cart")
 public class CartItemServlet extends HttpServlet {
 
-    private final CartItemService cartItemService = CartItemServiceImpl.getInstance();
+    private CartItemService cartItemService;
+
+    @Override
+    public void init() {
+        Services services = Services.from(getServletContext());
+        cartItemService = services.get(CartItemService.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

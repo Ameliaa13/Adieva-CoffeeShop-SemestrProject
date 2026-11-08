@@ -5,11 +5,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import listener.Services;
 import model.EventModel;
 import service.EventService;
 import service.PromotionService;
-import service.impl.EventServiceImpl;
-import service.impl.PromotionServiceImpl;
 import enums.EventVisibility;
 
 import java.io.IOException;
@@ -18,8 +17,15 @@ import java.util.List;
 @WebServlet("")
 public class HomeServlet extends HttpServlet {
 
-    private final EventService eventService = EventServiceImpl.getInstance();
-    private final PromotionService promotionService = PromotionServiceImpl.getInstance();
+    private EventService eventService;
+    private PromotionService promotionService;
+
+    @Override
+    public void init() {
+        Services services = Services.from(getServletContext());
+        eventService = services.get(EventService.class);
+        promotionService = services.get(PromotionService.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

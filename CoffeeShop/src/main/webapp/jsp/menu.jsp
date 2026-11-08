@@ -15,6 +15,9 @@
 
 <c:import url="/jsp/fragments/role-header.jsp"/>
 
+<c:set var="isAdmin"
+       value="${not empty sessionScope.user and sessionScope.user.role eq 'ADMIN'}"/>
+
 <main class="menu-container">
     <h1>Наше меню</h1>
 
@@ -53,41 +56,43 @@
                                     </c:choose>
                                 </a>
 
-                                <form class="favorite-form"
-                                      action="<c:url value='/favorites'/>"
-                                      method="post">
-                                    <input type="hidden"
-                                           name="itemId"
-                                           value="${item.id}">
-                                    <input type="hidden"
-                                           name="returnTo"
-                                           value="menu">
+                                <c:if test="${not isAdmin}">
+                                    <form class="favorite-form"
+                                          action="<c:url value='/favorites'/>"
+                                          method="post">
+                                        <input type="hidden"
+                                               name="itemId"
+                                               value="${item.id}">
+                                        <input type="hidden"
+                                               name="returnTo"
+                                               value="menu">
 
-                                    <c:choose>
-                                        <c:when test="${favoriteItemIds[item.id]}">
-                                            <input type="hidden"
-                                                   name="action"
-                                                   value="delete">
-                                            <button class="favorite-button is-favorite"
-                                                    type="submit"
-                                                    title="Убрать из избранного"
-                                                    aria-label="Убрать из избранного">
-                                                ♥
-                                            </button>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="hidden"
-                                                   name="action"
-                                                   value="add">
-                                            <button class="favorite-button"
-                                                    type="submit"
-                                                    title="Добавить в избранное"
-                                                    aria-label="Добавить в избранное">
-                                                ♡
-                                            </button>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </form>
+                                        <c:choose>
+                                            <c:when test="${favoriteItemIds[item.id]}">
+                                                <input type="hidden"
+                                                       name="action"
+                                                       value="delete">
+                                                <button class="favorite-button is-favorite"
+                                                        type="submit"
+                                                        title="Убрать из избранного"
+                                                        aria-label="Убрать из избранного">
+                                                    ♥
+                                                </button>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="hidden"
+                                                       name="action"
+                                                       value="add">
+                                                <button class="favorite-button"
+                                                        type="submit"
+                                                        title="Добавить в избранное"
+                                                        aria-label="Добавить в избранное">
+                                                    ♡
+                                                </button>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </form>
+                                </c:if>
                             </div>
 
                             <a class="menu-card-link" href="${itemUrl}">
@@ -98,50 +103,73 @@
                                 <c:out value="${item.price}"/> ₽
                             </p>
 
-                            <div class="menu-card-cart">
-                                <c:choose>
-                                    <c:when test="${not empty cartQuantities[item.id]}">
-                                        <span class="cart-count">
-                                            В корзине: ${cartQuantities[item.id]} шт.
-                                        </span>
-
-                                        <div class="quantity-controls">
-                                            <form action="<c:url value='/cart'/>"
-                                                  method="post">
-                                                <input type="hidden"
-                                                       name="itemId"
-                                                       value="${item.id}">
-                                                <input type="hidden"
-                                                       name="returnTo"
-                                                       value="menu">
-
-                                                <c:choose>
-                                                    <c:when test="${cartQuantities[item.id] > 1}">
-                                                        <input type="hidden"
-                                                               name="action"
-                                                               value="update">
-                                                        <input type="hidden"
-                                                               name="quantity"
-                                                               value="${cartQuantities[item.id] - 1}">
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <input type="hidden"
-                                                               name="action"
-                                                               value="delete">
-                                                    </c:otherwise>
-                                                </c:choose>
-
-                                                <button class="quantity-button"
-                                                        type="submit"
-                                                        aria-label="Уменьшить количество">
-                                                    −
-                                                </button>
-                                            </form>
-
-                                            <span class="quantity-value">
-                                                    ${cartQuantities[item.id]}
+                            <c:if test="${not isAdmin}">
+                                <div class="menu-card-cart">
+                                    <c:choose>
+                                        <c:when test="${not empty cartQuantities[item.id]}">
+                                            <span class="cart-count">
+                                                В корзине: ${cartQuantities[item.id]} шт.
                                             </span>
 
+                                            <div class="quantity-controls">
+                                                <form action="<c:url value='/cart'/>"
+                                                      method="post">
+                                                    <input type="hidden"
+                                                           name="itemId"
+                                                           value="${item.id}">
+                                                    <input type="hidden"
+                                                           name="returnTo"
+                                                           value="menu">
+
+                                                    <c:choose>
+                                                        <c:when test="${cartQuantities[item.id] > 1}">
+                                                            <input type="hidden"
+                                                                   name="action"
+                                                                   value="update">
+                                                            <input type="hidden"
+                                                                   name="quantity"
+                                                                   value="${cartQuantities[item.id] - 1}">
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <input type="hidden"
+                                                                   name="action"
+                                                                   value="delete">
+                                                        </c:otherwise>
+                                                    </c:choose>
+
+                                                    <button class="quantity-button"
+                                                            type="submit"
+                                                            aria-label="Уменьшить количество">
+                                                        −
+                                                    </button>
+                                                </form>
+
+                                                <span class="quantity-value">
+                                                        ${cartQuantities[item.id]}
+                                                </span>
+
+                                                <form action="<c:url value='/cart'/>"
+                                                      method="post">
+                                                    <input type="hidden"
+                                                           name="action"
+                                                           value="add">
+                                                    <input type="hidden"
+                                                           name="itemId"
+                                                           value="${item.id}">
+                                                    <input type="hidden"
+                                                           name="returnTo"
+                                                           value="menu">
+
+                                                    <button class="quantity-button"
+                                                            type="submit"
+                                                            aria-label="Увеличить количество">
+                                                        +
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </c:when>
+
+                                        <c:otherwise>
                                             <form action="<c:url value='/cart'/>"
                                                   method="post">
                                                 <input type="hidden"
@@ -154,36 +182,15 @@
                                                        name="returnTo"
                                                        value="menu">
 
-                                                <button class="quantity-button"
-                                                        type="submit"
-                                                        aria-label="Увеличить количество">
-                                                    +
+                                                <button class="add-to-cart-button"
+                                                        type="submit">
+                                                    В корзину
                                                 </button>
                                             </form>
-                                        </div>
-                                    </c:when>
-
-                                    <c:otherwise>
-                                        <form action="<c:url value='/cart'/>"
-                                              method="post">
-                                            <input type="hidden"
-                                                   name="action"
-                                                   value="add">
-                                            <input type="hidden"
-                                                   name="itemId"
-                                                   value="${item.id}">
-                                            <input type="hidden"
-                                                   name="returnTo"
-                                                   value="menu">
-
-                                            <button class="add-to-cart-button"
-                                                    type="submit">
-                                                В корзину
-                                            </button>
-                                        </form>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </c:if>
                         </article>
                     </c:if>
                 </c:forEach>

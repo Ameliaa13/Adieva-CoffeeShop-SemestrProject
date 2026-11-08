@@ -7,9 +7,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import listener.Services;
 import model.EventModel;
 import service.EventService;
-import service.impl.EventServiceImpl;
 import utils.AdminServletUtils;
 import utils.ValidationUtils;
 
@@ -21,7 +21,13 @@ import java.util.Locale;
 @WebServlet("/admin/events")
 public class AdminEventServlet extends HttpServlet {
 
-    private final EventService eventService = EventServiceImpl.getInstance();
+    private EventService eventService;
+
+    @Override
+    public void init() {
+        Services services = Services.from(getServletContext());
+        eventService = services.get(EventService.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

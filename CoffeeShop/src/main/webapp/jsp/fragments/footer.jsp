@@ -6,7 +6,7 @@
     <div class="footer-inner">
         <div class="footer-brand">
             <a href="<c:url value='/'/>" class="logo footer-logo">
-                <span class="logo-name">НАЗВАНИЕ</span>
+                <span class="logo-name">A-melia-n Beans</span>
                 <span class="logo-subtitle">КОФЕ • КНИГИ • КИНО</span>
             </a>
 
@@ -28,9 +28,9 @@
         <div class="footer-column">
             <h3>Контакты</h3>
 
-            <p>Казань, укажи адрес кофейни</p>
-            <p>Ежедневно: 09:00–22:00</p>
-            <p>Телефон: укажи номер</p>
+            <p>Казань, ул. Кремлевская,35</p>
+            <p>Ежедневно: 08:00–23:00</p>
+            <p>Телефон: 8-800-555-35-35</p>
         </div>
 
     </div>

@@ -6,9 +6,7 @@
 
     <a href="<c:url value='/'/>" class="logo">
       <img src="<c:url value='/img/logo.png'/>" alt="Amelia-n Beans" class="logo-image">
-<%--      <span class="logo-subtitle">КОФЕ • КНИГИ • КИНО</span>--%>
     </a>
-
     <a href="<c:url value='/'/>" class="logo">
       <span class="logo-name">A-melia-n Beans</span>
       <span class="logo-subtitle">КОФЕ • КНИГИ • КИНО</span>

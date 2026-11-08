@@ -6,11 +6,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import listener.Services;
 import model.EventModel;
 import model.SecretRiddleModel;
 import model.UserModel;
 import service.SecretRiddleService;
-import service.impl.SecretRiddleServiceImpl;
 import utils.ValidationUtils;
 
 import java.io.IOException;
@@ -18,7 +18,13 @@ import java.io.IOException;
 @WebServlet("/secret-event")
 public class SecretEventServlet extends HttpServlet {
 
-    private final SecretRiddleService secretRiddleService = SecretRiddleServiceImpl.getInstance();
+    private SecretRiddleService secretRiddleService;
+
+    @Override
+    public void init() {
+        Services services = Services.from(getServletContext());
+        secretRiddleService = services.get(SecretRiddleService.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -34,6 +40,11 @@ public class SecretEventServlet extends HttpServlet {
 
         if(eventId == null){
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        if (secretRiddleService.hasSolvedEvent(user.getId(), eventId)) {
+            resp.sendRedirect(req.getContextPath() + "/event?id=" + eventId);
             return;
         }
 
@@ -54,6 +65,11 @@ public class SecretEventServlet extends HttpServlet {
         Long eventId = parseId(req.getParameter("id"));
         if (eventId == null) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        if (secretRiddleService.hasSolvedEvent(user.getId(), eventId)) {
+            resp.sendRedirect(req.getContextPath() + "/event?id=" + eventId);
             return;
         }
 
@@ -81,8 +97,8 @@ public class SecretEventServlet extends HttpServlet {
             redirect(req, resp, eventId, "invalid-answer");
         }catch (RuntimeException e){
             getServletContext().log("Не удалось обработать секретное мероприятие.", e);
+            redirect(req, resp, eventId, "error");
         }
-        redirect(req, resp, eventId, "error");
     }
 
 

@@ -5,8 +5,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import listener.Services;
 import service.AuthService;
-import service.impl.AuthServiceImpl;
 import utils.ErrorUtils;
 import utils.ValidationUtils;
 
@@ -17,7 +17,13 @@ import java.time.LocalDate;
 @WebServlet("/sign-up")
 public class SignUpServlet extends HttpServlet {
 
-    private final AuthService authService = AuthServiceImpl.getInstance();
+    private AuthService authService;
+
+    @Override
+    public void init() {
+        Services services = Services.from(getServletContext());
+        authService = services.get(AuthService.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -51,7 +57,7 @@ public class SignUpServlet extends HttpServlet {
             return;
         }
 
-        resp.sendRedirect(req.getContextPath() + "/");
+        resp.sendRedirect(req.getContextPath() + "/sign-in");
 
     }
 }

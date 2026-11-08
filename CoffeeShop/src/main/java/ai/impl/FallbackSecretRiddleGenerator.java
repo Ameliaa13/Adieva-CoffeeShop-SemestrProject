@@ -6,51 +6,37 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 public class FallbackSecretRiddleGenerator implements SecretRiddleGenerator {
 
-    private static final Logger LOGGER =
-            Logger.getLogger(FallbackSecretRiddleGenerator.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FallbackSecretRiddleGenerator.class.getName());
 
-    private final SecretRiddleGenerator primaryGenerator;
-    private final SecretRiddleGenerator fallbackGenerator;
+    private final List<SecretRiddleGenerator> generators;
 
-    public FallbackSecretRiddleGenerator(
-            SecretRiddleGenerator primaryGenerator,
-            SecretRiddleGenerator fallbackGenerator
-    ) {
-        this.primaryGenerator = primaryGenerator;
-        this.fallbackGenerator = fallbackGenerator;
+    public FallbackSecretRiddleGenerator(SecretRiddleGenerator... generators) {
+        if (generators == null || generators.length == 0) {
+            throw new IllegalArgumentException("Нужен хотя бы один генератор.");
+        }
+        this.generators = List.of(generators);
     }
 
     @Override
-    public String generate(
-            String theme,
-            String answer,
-            List<String> previousRiddles
-    ) {
-        try {
-            return primaryGenerator.generate(theme, answer, previousRiddles);
-        } catch (RuntimeException geminiError) {
-            LOGGER.log(
-                    Level.WARNING,
-                    "Gemini не сработал. Переключаюсь на Ollama.",
-                    geminiError
-            );
+    public String generate(String theme, String answer, List<String> previousRiddles) {
+        RuntimeException lastError = null;
 
+        for (SecretRiddleGenerator generator : generators) {
             try {
-                return fallbackGenerator.generate(
-                        theme,
-                        answer,
-                        previousRiddles
-                );
-            } catch (RuntimeException ollamaError) {
-                ollamaError.addSuppressed(geminiError);
+                return generator.generate(theme, answer, previousRiddles);
+            } catch (RuntimeException e) {
+                LOGGER.log(Level.WARNING, generator.getClass().getSimpleName() + " не сработал, пробую следующий.", e);
 
-                throw new IllegalStateException(
-                        "Не удалось получить загадку ни от Gemini, ни от Ollama.",
-                        ollamaError
-                );
+                if (lastError != null) {
+                    e.addSuppressed(lastError);
+                }
+                lastError = e;
             }
         }
+
+        throw new IllegalStateException("Не удалось получить загадку ни от одного генератора.", lastError);
     }
 }

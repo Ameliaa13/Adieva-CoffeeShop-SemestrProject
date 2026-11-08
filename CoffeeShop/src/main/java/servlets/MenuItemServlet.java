@@ -5,9 +5,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import listener.Services;
 import model.MenuItemModel;
 import service.MenuService;
-import service.impl.MenuServiceImpl;
 import utils.ValidationUtils;
 
 import java.io.IOException;
@@ -16,7 +16,13 @@ import java.util.Optional;
 @WebServlet("/menu/item")
 public class MenuItemServlet extends HttpServlet {
 
-    private final MenuService menuService = MenuServiceImpl.getInstance();
+    private MenuService menuService;
+
+    @Override
+    public void init() {
+        Services services = Services.from(getServletContext());
+        menuService = services.get(MenuService.class);
+    }
 
     @Override
     protected void doGet(

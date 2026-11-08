@@ -6,12 +6,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import listener.Services;
 import model.EventModel;
 import model.UserModel;
 import service.OrderService;
 import service.ProfileService;
-import service.impl.OrderServiceImpl;
-import service.impl.ProfileServiceImpl;
 import utils.ValidationUtils;
 
 import java.io.IOException;
@@ -20,8 +19,15 @@ import java.util.List;
 @WebServlet("/profile")
 public class ProfileServlet extends HttpServlet {
 
-    private final ProfileService profileService = ProfileServiceImpl.getInstance();
-    private final OrderService orderService = OrderServiceImpl.getInstance();
+    private ProfileService profileService;
+    private OrderService orderService;
+
+    @Override
+    public void init() {
+        Services services = Services.from(getServletContext());
+        profileService = services.get(ProfileService.class);
+        orderService = services.get(OrderService.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

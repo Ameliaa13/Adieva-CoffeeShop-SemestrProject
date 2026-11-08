@@ -80,15 +80,12 @@ public class EventRegistrationRepositoryImpl implements EventRegistrationReposit
             throw new IllegalStateException("Не удалось записать пользователя на мероприятие: " + result);
         }
     }
-/*
-    public void save(Connection connection, Long userId, Long eventId){
-        try()
-    }*/
+
 
     @Override
     public EventRegistrationResult register(Long userId, Long eventId) {
         try (Connection connection = DataBaseConfig.getConnection()) {
-
+            connection.setAutoCommit(false);
             try {
                 Integer capacity = findAvailableEventCapacity(connection, eventId);
 
@@ -123,6 +120,8 @@ public class EventRegistrationRepositoryImpl implements EventRegistrationReposit
             throw new RuntimeException("Error registering user for event", e);
         }
     }
+
+
     @Override
     public Optional<EventRegistrationModel> findByTwoId(Long userId, Long eventId) {
         try (Connection connection = DataBaseConfig.getConnection()) {

@@ -9,25 +9,33 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import listener.Services;
 import model.EventModel;
 import model.UserModel;
 import service.EventRegistrationService;
 import service.EventService;
 import service.SecretRiddleService;
-import service.impl.EventRegistrationServiceImpl;
-import service.impl.EventServiceImpl;
-import service.impl.SecretRiddleServiceImpl;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @WebServlet(urlPatterns = {"/events", "/event"})
 public class EventServlet extends HttpServlet {
 
-    private final EventService eventService = EventServiceImpl.getInstance();
-    private final EventRegistrationService eventRegistrationService = EventRegistrationServiceImpl.getInstance();
-    private final SecretRiddleService secretRiddleService = SecretRiddleServiceImpl.getInstance();
+    private EventService eventService;
+    private EventRegistrationService eventRegistrationService;
+    private SecretRiddleService secretRiddleService;
+
+    @Override
+    public void init() {
+        Services services = Services.from(getServletContext());
+        eventService = services.get(EventService.class);
+        eventRegistrationService = services.get(EventRegistrationService.class);
+        secretRiddleService = services.get(SecretRiddleService.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -39,7 +47,22 @@ public class EventServlet extends HttpServlet {
         HttpSession session = req.getSession(false);
         UserModel user = session == null ? null : (UserModel) session.getAttribute("user");
 
-        req.setAttribute("events", user == null ? eventService.getUpcomingEvents() : eventService.getUpcomingEventsForMembers());
+        var events = user == null
+                ? eventService.getUpcomingEvents()
+                : eventService.getUpcomingEventsForMembers();
+
+        Set<Long> solvedSecretEventIds = new HashSet<>();
+        if (user != null) {
+            for (EventModel event : events) {
+                if (event.getVisibility() == EventVisibility.SECRET
+                        && secretRiddleService.hasSolvedEvent(user.getId(), event.getId())) {
+                    solvedSecretEventIds.add(event.getId());
+                }
+            }
+        }
+
+        req.setAttribute("events", events);
+        req.setAttribute("solvedSecretEventIds", solvedSecretEventIds);
         req.getRequestDispatcher("/jsp/events.jsp").forward(req, resp);
     }
 

@@ -6,9 +6,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import listener.Services;
 import model.UserModel;
 import service.AuthService;
-import service.impl.AuthServiceImpl;
 import utils.ErrorUtils;
 import utils.ValidationUtils;
 
@@ -20,7 +20,13 @@ import java.util.Optional;
 @WebServlet("/sign-in")
 public class SignInServlet extends HttpServlet {
 
-    private final AuthService authService = AuthServiceImpl.getInstance();
+    private AuthService authService;
+
+    @Override
+    public void init() {
+        Services services = Services.from(getServletContext());
+        authService = services.get(AuthService.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -38,7 +44,7 @@ public class SignInServlet extends HttpServlet {
         try{
             auth = authService.authenticate(email, password);
         }catch (ValidationUtils.ValidationException e){
-            ErrorUtils.redirectToError(req, resp, "Все поля должны быть заполнены!"); // либо ошибка e.getMessage(), на подумать оставлю
+            ErrorUtils.redirectToError(req, resp, "Все поля должны быть заполнены!");
             return;
         }
 

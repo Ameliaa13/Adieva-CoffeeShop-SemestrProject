@@ -6,10 +6,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import listener.Services;
 import model.OrderModel;
 import model.UserModel;
 import service.OrderService;
-import service.impl.OrderServiceImpl;
 import utils.ErrorUtils;
 import utils.ValidationUtils;
 
@@ -19,7 +19,13 @@ import java.util.Optional;
 @WebServlet(urlPatterns = {"/checkout", "/order-success"})
 public class OrderServlet extends HttpServlet {
 
-    private final OrderService orderService = OrderServiceImpl.getInstance();
+    private OrderService orderService;
+
+    @Override
+    public void init() {
+        Services services = Services.from(getServletContext());
+        orderService = services.get(OrderService.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -66,11 +66,6 @@
             <input type="password" id="password" name="password"
                 placeholder="Введите пароль" required>
         </div>
-        <div class="form-group">
-            <label for="confirmPassword">Повторите пароль</label>
-            <input type="password" id="confirmPassword" name="confirmPassword"
-                   placeholder="Повторите пароль" required>
-        </div>
 
         <button type="submit">Зарегистрироваться</button>
     </form>

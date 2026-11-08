@@ -5,9 +5,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import listener.Services;
 import model.PromotionModel;
 import service.PromotionService;
-import service.impl.PromotionServiceImpl;
 import utils.AdminServletUtils;
 import utils.ValidationUtils;
 
@@ -18,8 +18,13 @@ import java.time.LocalDate;
 @WebServlet("/admin/promotions")
 public class AdminPromotionServlet extends HttpServlet {
 
-    private final PromotionService promotionService =
-            PromotionServiceImpl.getInstance();
+    private PromotionService promotionService;
+
+    @Override
+    public void init() {
+        Services services = Services.from(getServletContext());
+        promotionService = services.get(PromotionService.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -6,13 +6,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import listener.Services;
 import model.CartItemModel;
 import model.FavoriteModel;
 import model.UserModel;
 import service.CartItemService;
 import service.FavoriteService;
 import service.MenuService;
-import service.impl.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,9 +21,17 @@ import java.util.Map;
 @WebServlet("/menu")
 public class MenuServlet extends HttpServlet {
 
-    private final MenuService menuService = MenuServiceImpl.getInstance();
-    private final CartItemService cartItemService = CartItemServiceImpl.getInstance();
-    private final FavoriteService favoriteService = FavoriteServiceImpl.getInstance();
+    private MenuService menuService;
+    private CartItemService cartItemService;
+    private FavoriteService favoriteService;
+
+    @Override
+    public void init() {
+        Services services = Services.from(getServletContext());
+        menuService = services.get(MenuService.class);
+        cartItemService = services.get(CartItemService.class);
+        favoriteService = services.get(FavoriteService.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
