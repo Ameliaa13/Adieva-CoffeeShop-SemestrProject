@@ -1,0 +1,229 @@
+.event-detail-page {
+    width: min(1120px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 36px 0 64px;
+}
+.registration-message {
+    margin-top: 22px;
+    padding: 13px 16px;
+    border: 1px solid #d8c2af;
+    border-radius: 8px;
+    background: #f8f0e8;
+    color: #5b3d2d;
+    line-height: 1.5;
+}
+
+.event-registration {
+    margin-top: 24px;
+}
+
+.event-registration form {
+    margin: 0;
+}
+
+.event-registration-note {
+    margin: 0;
+    color: #765b4d;
+    line-height: 1.6;
+}
+
+.event-registration-note a {
+    color: #704d38;
+    font-weight: 700;
+}
+
+.event-cancel-button {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    border: 1px solid #a94242;
+    border-radius: 7px;
+    background: #fff;
+    color: #a94242;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.event-cancel-button:hover {
+    background: #a94242;
+    color: #fff;
+}
+.event-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+    color: #89796f;
+    font-size: 14px;
+}
+
+.event-breadcrumb a {
+    color: #6f4e37;
+    text-decoration: none;
+}
+
+.event-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.event-detail-card {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    overflow: hidden;
+    border: 1px solid #e7ddd2;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 6px 22px rgba(52, 41, 35, 0.09);
+}
+
+.event-detail-image-wrap {
+    min-height: 480px;
+    background: #eee5dd;
+}
+
+.event-detail-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.event-detail-image-placeholder {
+    display: flex;
+    min-height: 480px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #76675e;
+    font-size: 15px;
+}
+
+.event-detail-image-placeholder span:first-child {
+    font-size: 42px;
+}
+
+.event-detail-content {
+    padding: clamp(26px, 4vw, 48px);
+}
+
+.event-detail-eyebrow {
+    margin: 0 0 10px;
+    color: #98745f;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.event-detail-content h1 {
+    margin: 0 0 24px;
+    color: #342923;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(28px, 3.5vw, 40px);
+    line-height: 1.2;
+}
+
+.event-detail-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 30px;
+}
+
+.event-fact {
+    display: flex;
+    min-height: 68px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px 14px;
+    border: 1px solid #eee5df;
+    border-radius: 9px;
+    background: #fbf8f5;
+}
+
+.event-fact-label {
+    color: #88776b;
+    font-size: 13px;
+}
+
+.event-fact strong {
+    color: #49332b;
+    font-size: 15px;
+}
+
+.event-detail-description h2 {
+    margin: 0 0 10px;
+    color: #49332b;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 22px;
+}
+
+.event-detail-description p {
+    margin: 0;
+    color: #62564f;
+    font-size: 16px;
+    line-height: 1.75;
+    white-space: pre-line;
+}
+
+.event-detail-button {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 28px;
+    padding: 10px 18px;
+    border: 1px solid #6f4e37;
+    border-radius: 7px;
+    background: #6f4e37;
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.event-detail-button:hover {
+    background: #5a3d2b;
+}
+
+@media (max-width: 800px) {
+    .event-detail-card {
+        grid-template-columns: 1fr;
+    }
+
+    .event-detail-image-wrap,
+    .event-detail-image {
+        min-height: 0;
+        height: auto;
+        aspect-ratio: 16 / 10;
+    }
+
+    .event-detail-image-placeholder {
+        min-height: 280px;
+    }
+}
+
+@media (max-width: 520px) {
+    .event-detail-page {
+        width: calc(100% - 32px);
+        padding: 24px 0 44px;
+    }
+
+    .event-detail-content {
+        padding: 24px 20px;
+    }
+
+    .event-detail-facts {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+}

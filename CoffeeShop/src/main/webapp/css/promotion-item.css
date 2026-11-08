@@ -1,0 +1,115 @@
+.promotion-page {
+    width: min(1120px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 36px 0 64px;
+}
+
+.promotion-back {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #6f4e37;
+    text-decoration: none;
+}
+
+.promotion-back:hover {
+    text-decoration: underline;
+}
+
+.promotion-detail {
+    overflow: hidden;
+    border: 1px solid #e7ddd2;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 6px 22px rgba(52, 41, 35, 0.09);
+}
+
+.promotion-detail-image-wrap {
+    width: 100%;
+    max-height: 460px;
+    overflow: hidden;
+    background: #49332b;
+}
+
+.promotion-detail-image {
+    display: block;
+    width: 100%;
+    max-height: 460px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.promotion-detail-content {
+    padding: clamp(24px, 5vw, 48px);
+}
+
+.promotion-detail-eyebrow {
+    margin: 0 0 10px;
+    color: #98745f;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.promotion-detail-content h1 {
+    margin: 0 0 16px;
+    color: #342923;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1.15;
+}
+
+.promotion-detail-short {
+    margin: 0 0 24px;
+    color: #6f4e37;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.promotion-detail-description {
+    color: #62564f;
+    font-size: 16px;
+    line-height: 1.8;
+    white-space: pre-line;
+}
+
+.promotion-detail-period {
+    margin: 28px 0 24px;
+    color: #76675e;
+    line-height: 1.6;
+}
+
+.promotion-detail-period strong {
+    color: #49332b;
+}
+
+.promotion-detail-button {
+    display: inline-flex;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border: 1px solid #6f4e37;
+    border-radius: 7px;
+    background: #6f4e37;
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.promotion-detail-button:hover {
+    background: #5a3d2b;
+}
+
+@media (max-width: 700px) {
+    .promotion-page {
+        width: calc(100% - 32px);
+        padding: 24px 0 44px;
+    }
+
+    .promotion-detail-image-wrap,
+    .promotion-detail-image {
+        max-height: 300px;
+    }
+}

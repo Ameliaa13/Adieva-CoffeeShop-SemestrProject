@@ -1,0 +1,160 @@
+.promotions-page {
+    width: min(1120px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 48px 0 64px;
+}
+
+.promotions-heading {
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.promotions-eyebrow {
+    margin: 0 0 8px;
+    color: #98745f;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.promotions-heading h1 {
+    margin: 0 0 8px;
+    color: #342923;
+    font-size: clamp(30px, 4vw, 42px);
+}
+
+.promotions-heading > p:last-child {
+    margin: 0;
+    color: #76675e;
+}
+
+.promotion-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.promotion-card {
+    position: relative;
+    display: flex;
+    min-height: 300px;
+    align-items: center;
+    overflow: hidden;
+    isolation: isolate;
+    border: 1px solid #e7ddd2;
+    border-radius: 12px;
+    background: #49332b;
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(52, 41, 35, 0.08);
+}
+
+.promotion-image {
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.35s ease;
+}
+
+.promotion-card:hover .promotion-image {
+    transform: scale(1.03);
+}
+
+.promotion-overlay {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: linear-gradient(
+            90deg,
+            rgba(45, 29, 22, 0.92) 0%,
+            rgba(45, 29, 22, 0.78) 42%,
+            rgba(45, 29, 22, 0.35) 75%,
+            rgba(45, 29, 22, 0.16) 100%
+    );
+}
+
+.promotion-info {
+    width: min(680px, 75%);
+    padding: 38px 48px;
+}
+
+.promotion-label {
+    margin: 0 0 10px;
+    color: #e9bd98;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.promotion-info h2 {
+    margin: 0 0 18px;
+    color: #fffdf9;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.2;
+}
+
+.promotion-description {
+    max-width: 580px;
+    margin: 0 0 20px;
+    color: #f0e6dd;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.promotion-more {
+    display: inline-block;
+    color: #f0dfcb;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+.promotion-card:hover .promotion-more {
+    color: #fff;
+}
+
+.promotions-empty {
+    padding: 32px;
+    border-radius: 10px;
+    background: #fff;
+    color: #76675e;
+    text-align: center;
+}
+
+@media (max-width: 700px) {
+    .promotions-page {
+        width: calc(100% - 32px);
+        padding: 32px 0 48px;
+    }
+
+    .promotion-card {
+        min-height: 340px;
+    }
+
+    .promotion-info {
+        width: 100%;
+        padding: 32px 28px;
+    }
+
+    .promotion-overlay {
+        background: linear-gradient(
+                90deg,
+                rgba(45, 29, 22, 0.9),
+                rgba(45, 29, 22, 0.58)
+        );
+    }
+}
+
+@media (max-width: 480px) {
+    .promotion-card {
+        min-height: 360px;
+    }
+
+    .promotion-info {
+        padding: 28px 22px;
+    }
+}
